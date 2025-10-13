@@ -56,6 +56,7 @@ type TranslationComponentKey =
 	| "tutorialDescription"
 	| "reference"
 	| "referenceDescription"
+	| "globalAttributes"
 	| "defaultValue"
 	| "stringValues"
 	| "showExample"

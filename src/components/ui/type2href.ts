@@ -73,7 +73,8 @@ export const type2href = (parameterType: string): string | null => {
  * | `figure` (function) | `figure.caption` | `body`     | `"definitions-caption"` |
  * | `calc` (group)      | `calc.abs`       | `value`    | `"functions-abs"`       |
  * | `array` (type)      | `array.at`       | `index`    | `"definitions-at"`      |
- * | `array` (type)      | Constructor      | `value`    | `"constructor"`      |
+ * | `array` (type)      | Constructor      | `value`    | `"constructor"`         |
+ * | typed HTML functions (in a group)      | `id`       | `"global-attributes"`   |
  */
 export function buildParamId(
 	parameterName: string,

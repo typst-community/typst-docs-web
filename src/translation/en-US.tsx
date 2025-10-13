@@ -135,6 +135,8 @@ export const Translation: TranslationComponent = (props) => {
 					definition name separated by a period.
 				</Fragment>
 			);
+		case "globalAttributes":
+			return <Fragment>Global Attributes</Fragment>;
 		case "parameters":
 			return <Fragment>Parameter</Fragment>;
 		case "parametersDescription":
