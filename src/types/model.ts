@@ -1,5 +1,5 @@
 // Type definitions for `docs.json`.
-// Reference: `docs/src/model.rs`
+// Reference: `docs/src/model.rs` at https://github.com/typst/typst/blame/main/docs/src/model.rs
 
 /**
  * Details about a documentation page and its children.
@@ -46,7 +46,7 @@ export type CategoryBody = {
 	content: {
 		name: string;
 		title: string;
-		details: string;
+		details: Html;
 		items: CategoryItem[];
 		shorthands: Shorthands | null;
 	};
@@ -72,19 +72,15 @@ export type Func = {
 	oneliner: string;
 	element: boolean;
 	contextual: boolean;
-	deprecation: string | null;
-	details: Html;
-	example: Html | null;
 	self: boolean;
 	params: Param[];
 	returns: string[];
 	scope: Func[];
-};
+} & WithDeprecation &
+	WithDetailsBlocks;
 
 type Param = {
 	name: string;
-	details: Html;
-	example: Html | null;
 	types: string[];
 	strings: Str[];
 	default: Html | null;
@@ -93,7 +89,26 @@ type Param = {
 	required: boolean;
 	variadic: boolean;
 	settable: boolean;
-};
+} & WithDetailsBlocks;
+
+type DetailsBlock =
+	| {
+			kind: "html";
+			content: Html;
+	  }
+	| {
+			kind: "example";
+			content: {
+				body: Html;
+				title: string | null;
+			};
+	  };
+
+type WithDetailsBlocks =
+	// Format since Typst v0.14.0-rc.1 (typst/typst#7011)
+	| { details: DetailsBlock[] }
+	// Format for Typst v0.13.1
+	| { details: Html; example: Html | null };
 
 type Str = {
 	string: string;
@@ -107,6 +122,8 @@ export type GroupBody = {
 		title: string;
 		details: Html;
 		functions: Func[];
+		/** Added in Typst v0.14.0-rc.1 (typst/typst#7083) */
+		global_attributes?: Param[];
 	};
 };
 
@@ -135,16 +152,27 @@ export type SymbolsBody = {
 
 type Symbol = {
 	name: string;
-	codepoint: number;
 	accent: boolean;
 	alternates: string[];
 	markup_shorthand: null | string;
 	math_shorthand: null | string;
 	math_class: null | string;
-	deprecation: null | string;
-};
+} & WithSymbolValue &
+	WithDeprecation;
+
+type WithSymbolValue =
+	// Format since Typst v0.14.0-rc.1 (typst/typst#6489)
+	| { value: string }
+	// Format for Typst v0.13.1
+	| { codepoint: number };
 
 type Shorthands = {
 	markup: Symbol[];
 	math: Symbol[];
 };
+
+type WithDeprecation =
+	// Format since Typst v0.14.0-rc.1 (typst/typst#6617)
+	| { deprecation_message: string | null; deprecation_until: string | null }
+	// Format for Typst v0.13.1
+	| { deprecation: string | null };
