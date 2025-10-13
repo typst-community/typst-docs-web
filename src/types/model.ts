@@ -171,8 +171,13 @@ type Shorthands = {
 	math: Symbol[];
 };
 
-type WithDeprecation =
+export type WithDeprecation =
 	// Format since Typst v0.14.0-rc.1 (typst/typst#6617)
-	| { deprecation_message: string | null; deprecation_until: string | null }
+	| {
+			// TODO: This message contains markdown. Check if this is a bug of the official typst-docs.
+			deprecation_message: string | null;
+			/** A Typst version without leading `v`. */
+			deprecation_until: string | null;
+	  }
 	// Format for Typst v0.13.1
 	| { deprecation: string | null };

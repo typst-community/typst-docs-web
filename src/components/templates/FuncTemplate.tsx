@@ -42,11 +42,7 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 				</small>
 			</h1>
 
-			{content.deprecation && (
-				<div className="mt-2">
-					<DeprecationWarning message={content.deprecation} />
-				</div>
-			)}
+			{<DeprecationWarning item={content} level="top" />}
 
 			<div class="my-4 text-gray-700">
 				<HtmlContent html={content.details} />
@@ -121,7 +117,7 @@ function ScopedDefinitions({
 							<code
 								class="text-base font-medium"
 								style={
-									method.deprecation
+									normalizeDeprecation(method) !== null
 										? { textDecoration: "line-through" }
 										: undefined
 								}
@@ -135,11 +131,7 @@ function ScopedDefinitions({
 							</small>
 						</h3>
 
-						{method.deprecation && (
-							<div className="mt-1">
-								<DeprecationWarning message={method.deprecation} />
-							</div>
-						)}
+						{<DeprecationWarning item={method} level="scoped" />}
 
 						<div class="pl-2">
 							<FunctionDisplay func={method} prefix={methodId} />

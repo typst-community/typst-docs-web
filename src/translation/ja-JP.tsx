@@ -42,6 +42,15 @@ export const Translation: TranslationComponent = (props) => {
 			return <Fragment>デフォルト値：</Fragment>;
 		case "stringValues":
 			return <Fragment>使用可能な文字列値</Fragment>;
+		case "deprecationWarning":
+			return props.until ? (
+				// TODO: Translate this. Don't forget to change `;` to `；`.
+				<Fragment>
+					{props.message}; it will be removed in Typst {props.until}
+				</Fragment>
+			) : (
+				<Fragment>{props.message}</Fragment>
+			);
 		case "showExample":
 			return <Fragment>例を表示</Fragment>;
 		case "tableOfContents":

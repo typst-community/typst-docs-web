@@ -37,6 +37,14 @@ export const Translation: TranslationComponent = (props) => {
 			return <Fragment>Default value:</Fragment>;
 		case "stringValues":
 			return <Fragment>Available string values</Fragment>;
+		case "deprecationWarning":
+			return props.until ? (
+				<Fragment>
+					{props.message}; it will be removed in Typst {props.until}
+				</Fragment>
+			) : (
+				<Fragment>{props.message}</Fragment>
+			);
 		case "showExample":
 			return <Fragment>Show example</Fragment>;
 		case "tableOfContents":
