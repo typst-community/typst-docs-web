@@ -63,13 +63,13 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 						switch (block.kind) {
 							case "html":
 								return (
-									<div class="mb-3 text-gray-700">
+									<div class="text-gray-700">
 										<HtmlContent html={block.content} />
 									</div>
 								);
 							case "example":
 								return (
-									<details class="my-4 folding-example group">
+									<details class="folding-example group">
 										<summary class="flex items-center gap-1 text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800">
 											<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 												<ChevronRightIcon />
@@ -119,7 +119,7 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 					)}
 
 					{param.default && (
-						<p class="mt-3 text-sm">
+						<p class="mt-5 text-sm">
 							<span class="font-medium">
 								<Translation translationKey="defaultValue" />
 							</span>{" "}

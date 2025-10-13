@@ -31,7 +31,7 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 						return <HtmlContent html={block.content} />;
 					case "example":
 						return isExampleFolding ? (
-							<details class="my-4 folding-example group">
+							<details class="folding-example group">
 								<summary class="flex items-center gap-1 text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800">
 									<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 										<ChevronRightIcon />
@@ -46,7 +46,7 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 								</div>
 							</details>
 						) : (
-							<div class="my-6 bg-gray-50 p-4 rounded-md border border-gray-200">
+							<div class="bg-gray-50 p-4 rounded-md border border-gray-200">
 								<HtmlContent html={block.content.body} />
 							</div>
 						);
