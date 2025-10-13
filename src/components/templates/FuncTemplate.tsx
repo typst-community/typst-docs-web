@@ -2,6 +2,10 @@ import type { FC } from "hono/jsx";
 import { Translation } from "../../translation/";
 import type { Func, FuncBody, Page } from "../../types/model";
 import {
+	normalizeDeprecation,
+	normalizeDetailBlocks,
+} from "../../utils/normalizeModel.js";
+import {
 	FunctionDefinition,
 	FunctionDisplay,
 	FunctionParameters,
@@ -44,9 +48,26 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 
 			{<DeprecationWarning item={content} level="top" />}
 
-			<div class="my-4 text-gray-700">
-				<HtmlContent html={content.details} />
-			</div>
+			{normalizeDetailBlocks(content).map((block) => {
+				switch (block.kind) {
+					case "html":
+						return (
+							<div class="my-4 text-gray-700">
+								<HtmlContent html={block.content} />
+							</div>
+						);
+					case "example":
+						// This will never reach for Typst v0.13.1 and v0.14.0-rc.1 documentations.
+						return (
+							<div class="my-6 bg-gray-50 p-4 rounded-md border border-gray-200">
+								{block.content.title}
+								<HtmlContent html={block.content.body} />
+							</div>
+						);
+					default:
+						return null;
+				}
+			})}
 
 			<h2 id="parameters" class="flex items-baseline gap-1">
 				<Translation translationKey="parameters" />
@@ -56,12 +77,6 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 			<div class="mb-6">
 				<FunctionDefinition func={content} />
 			</div>
-
-			{content.example && (
-				<div class="my-6 bg-gray-50 p-4 rounded-md border border-gray-200">
-					<HtmlContent html={content.example} />
-				</div>
-			)}
 
 			<div class="my-6">
 				<FunctionParameters func={content} />

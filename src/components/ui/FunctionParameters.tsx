@@ -2,6 +2,7 @@ import type { FC } from "hono/jsx";
 import { basePath } from "../../metadata";
 import { Translation } from "../../translation/";
 import type { Func } from "../../types/model";
+import { normalizeDetailBlocks } from "../../utils/normalizeModel";
 import { joinPath } from "../../utils/path";
 import { ChevronRightIcon } from "../icons";
 import { HtmlContent } from "./HtmlContent";
@@ -58,22 +59,35 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 						</div>
 					</h4>
 
-					<div class="mb-3 text-gray-700">
-						<HtmlContent html={param.details} />
-					</div>
-
-					{param.default && (
-						<p class="mt-3 text-sm">
-							<span class="font-medium">
-								<Translation translationKey="defaultValue" />
-							</span>{" "}
-							<span class="text-gray-700">
-								<HtmlContent html={param.default} />
-							</span>
-						</p>
-					)}
-
-					{/* Put all collapsible blocks after non-collapsible blocks. */}
+					{normalizeDetailBlocks(param).map((block) => {
+						switch (block.kind) {
+							case "html":
+								return (
+									<div class="mb-3 text-gray-700">
+										<HtmlContent html={block.content} />
+									</div>
+								);
+							case "example":
+								return (
+									<details class="my-4 folding-example group">
+										<summary class="flex items-center gap-1 text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800">
+											<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
+												<ChevronRightIcon />
+											</div>
+											<Translation
+												translationKey="showExample"
+												title={block.content.title}
+											/>
+										</summary>
+										<div class="mt-2 bg-white p-3 rounded-md border border-gray-200 text-sm">
+											<HtmlContent html={block.content.body} />
+										</div>
+									</details>
+								);
+							default:
+								return null;
+						}
+					})}
 
 					{param.strings.length > 0 && (
 						<details
@@ -104,18 +118,15 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 						</details>
 					)}
 
-					{param.example && (
-						<details class="my-4 folding-example group">
-							<summary class="flex items-center gap-1 text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800">
-								<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
-									<ChevronRightIcon />
-								</div>
-								<Translation translationKey="showExample" />
-							</summary>
-							<div class="mt-2 bg-white p-3 rounded-md border border-gray-200 text-sm">
-								<HtmlContent html={param.example} />
-							</div>
-						</details>
+					{param.default && (
+						<p class="mt-3 text-sm">
+							<span class="font-medium">
+								<Translation translationKey="defaultValue" />
+							</span>{" "}
+							<span class="text-gray-700">
+								<HtmlContent html={param.default} />
+							</span>
+						</p>
 					)}
 				</div>
 			))}

@@ -46,7 +46,11 @@ export const Translation: TranslationComponent = (props) => {
 				<Fragment>{props.message}</Fragment>
 			);
 		case "showExample":
-			return <Fragment>Show example</Fragment>;
+			return props.title ? (
+				<Fragment>Show example: {props.title}</Fragment>
+			) : (
+				<Fragment>Show example</Fragment>
+			);
 		case "tableOfContents":
 			return <Fragment>On this page</Fragment>;
 		case "nextPage":

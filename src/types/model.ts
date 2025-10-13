@@ -91,7 +91,7 @@ type Param = {
 	settable: boolean;
 } & WithDetailsBlocks;
 
-type DetailsBlock =
+export type DetailsBlock =
 	| {
 			kind: "html";
 			content: Html;
@@ -104,7 +104,7 @@ type DetailsBlock =
 			};
 	  };
 
-type WithDetailsBlocks =
+export type WithDetailsBlocks =
 	// Format since Typst v0.14.0-rc.1 (typst/typst#7011)
 	| { details: DetailsBlock[] }
 	// Format for Typst v0.13.1

@@ -60,7 +60,6 @@ type TranslationComponentKey =
 	| "globalAttributes"
 	| "defaultValue"
 	| "stringValues"
-	| "showExample"
 	// Translation statuses
 	| "untranslated"
 	| "untranslatedMessage"
@@ -94,7 +93,8 @@ export type TranslationComponentProps =
 			message: string;
 			/** A Typst version, e.g. "0.15.0". */
 			until: string | null;
-	  };
+	  }
+	| { translationKey: "showExample"; title: string | null };
 
 /**
  * Translation component for UI text, descriptions, and other content to be embedded as JSX.

@@ -52,7 +52,11 @@ export const Translation: TranslationComponent = (props) => {
 				<Fragment>{props.message}</Fragment>
 			);
 		case "showExample":
-			return <Fragment>例を表示</Fragment>;
+			return props.title ? (
+				<Fragment>例を表示：{props.title}</Fragment>
+			) : (
+				<Fragment>例を表示</Fragment>
+			);
 		case "tableOfContents":
 			return <Fragment>目次</Fragment>;
 		case "nextPage":
