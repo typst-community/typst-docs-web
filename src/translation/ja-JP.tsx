@@ -119,7 +119,7 @@ export const Translation: TranslationComponent = (props) => {
 		case "constructorDescription":
 			return (
 				<Fragment>
-					型がコンストラクタを持っていれば、その型の新しい値を生成する関数のように呼び出すことができます。
+					コンストラクタを持つ型の場合、関数のように呼び出すことで、その型の新しい値を作成できます。
 				</Fragment>
 			);
 		case "definitionsOf":
