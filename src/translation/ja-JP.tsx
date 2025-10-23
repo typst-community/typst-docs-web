@@ -19,41 +19,23 @@ export const translation: TranslationObject = {
 	openSearch: () => "検索を開く",
 	showInformation: (props: { name: string }) => `${props.name}の詳細情報を表示`,
 	tooltipKind: (props: { kind: TooltipProps["kind"] }) => {
-		switch (props.kind) {
-			case "element":
-				return "要素関数";
-			case "contextual":
-				return "コンテキスト関数";
-			case "definitions":
-				return "定義";
-			case "parameters":
-				return "引数";
-			case "variadic":
-				return "可変長引数";
-			case "settable":
-				return "設定可能引数";
-			case "positional":
-				return "位置引数";
-			case "required":
-				return "必須引数";
-			default:
-				return props.kind;
-		}
+		const map: Record<TooltipProps["kind"], string> = {
+			element: "要素関数",
+			contextual: "コンテキスト関数",
+			constructor: "コンストラクタ",
+			definitions: "定義",
+			parameters: "引数",
+			variadic: "可変長引数",
+			settable: "設定可能引数",
+			positional: "位置引数",
+			required: "必須引数",
+		};
+		return map[props.kind];
 	},
 } as const;
 
 export const Translation: TranslationComponent = (props) => {
 	switch (props.translationKey) {
-		case "definition":
-			return <Fragment>定義</Fragment>;
-		case "constructor":
-			return <Fragment>コンストラクタ</Fragment>;
-		case "definitionOf":
-			return (
-				<Fragment>
-					<code>{props.name}</code>の定義
-				</Fragment>
-			);
 		case "search":
 			return <Fragment>検索</Fragment>;
 		case "defaultValue":
@@ -131,17 +113,32 @@ export const Translation: TranslationComponent = (props) => {
 					コンテキスト関数は、コンテキストが既知の場合にのみ使用できます。
 				</Fragment>
 			);
-		case "definitionTooltip":
+
+		case "constructor":
+			return <Fragment>コンストラクタ</Fragment>;
+		case "constructorDescription":
+			return (
+				<Fragment>
+					コンストラクタを持つ型の場合、関数のように呼び出すことで、その型の新しい値を作成できます。
+				</Fragment>
+			);
+		case "definitionsOf":
+			return (
+				<Fragment>
+					<code>{props.name}</code>の定義
+				</Fragment>
+			);
+		case "definitions":
 			return <Fragment>定義</Fragment>;
-		case "definitionTooltipDescription":
+		case "definitionsDescription":
 			return (
 				<Fragment>
 					これらの関数や型には、関連する定義を持たせることができます。定義にアクセスするには、対象の関数や型の名前を指定した後に、ピリオド区切りで定義名を記述します。
 				</Fragment>
 			);
-		case "argument":
+		case "parameters":
 			return <Fragment>引数</Fragment>;
-		case "argumentDescription":
+		case "parametersDescription":
 			return (
 				<Fragment>
 					引数は関数への入力値です。関数名の後に括弧で囲んで指定します。

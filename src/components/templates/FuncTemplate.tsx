@@ -53,7 +53,7 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 			</div>
 
 			<h2 id="parameters" class="flex items-baseline gap-1">
-				<Translation translationKey="argument" />
+				<Translation translationKey="parameters" />
 				<Tooltip kind="parameters" />
 			</h2>
 
@@ -102,9 +102,9 @@ function ScopedDefinitions({
 				{parent ? (
 					// Currently, the scope has at most two levels.
 					// Therefore, it is sufficient to only annotate the direct `parent`.
-					<Translation translationKey="definitionOf" name={parent.name} />
+					<Translation translationKey="definitionsOf" name={parent.name} />
 				) : (
-					<Translation translationKey="definition" />
+					<Translation translationKey="definitions" />
 				)}
 				<Tooltip kind="definitions" />
 			</h2>

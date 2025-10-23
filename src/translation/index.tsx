@@ -30,62 +30,69 @@ export type TranslationObject = {
 };
 
 type TranslationComponentKey =
-	| "definition"
-	| "constructor"
-	| "tableOfContents"
-	| "untranslated"
-	| "untranslatedMessage"
-	| "document"
-	| "langVersion"
+	// Function tooltips
 	| "elementFunction"
 	| "elementFunctionDescription"
 	| "contextFunction"
 	| "contextFunctionDescription"
-	| "definitionTooltip"
-	| "definitionTooltipDescription"
+	// Section tooltips
+	| "constructor"
+	| "constructorDescription"
+	| "definitions" // See also `definitionsOf`
+	| "definitionsDescription"
+	| "parameters"
+	| "parametersDescription"
+	// Parameter tooltips
 	| "variadic"
-	| "translationRate"
 	| "variadicDescription"
-	| "typstOfficialDocs"
-	| "typstOfficialWebsite"
+	| "settable"
+	| "settableDescription"
+	| "positional"
+	| "positionalDescription"
+	| "required"
+	| "requiredDescription"
+	// Other texts in documentation
+	| "tutorial"
+	| "tutorialDescription"
+	| "reference"
+	| "referenceDescription"
+	| "defaultValue"
+	| "stringValues"
+	| "showExample"
+	// Translation statuses
+	| "untranslated"
+	| "untranslatedMessage"
 	| "communityContent"
 	| "contentAddedByCommunity"
 	| "partiallyTranslated"
 	| "partiallyTranslatedMessage"
 	| "translated"
 	| "translatedMessage"
-	| "siteNoticeBannerTitle"
-	| "siteNoticeBannerDescription"
-	| "tutorial"
-	| "tutorialDescription"
-	| "referenceDescription"
-	| "reference"
-	| "openOfficialDocs"
+	// Header, sidebar, and footer
+	| "document"
+	| "langVersion"
+	| "translationRate"
 	| "search"
-	| "argument"
-	| "argumentDescription"
-	| "required"
-	| "requiredDescription"
-	| "positional"
-	| "positionalDescription"
-	| "defaultValue"
-	| "stringValues"
-	| "showExample"
-	| "settable"
-	| "settableDescription"
+	| "typstOfficialWebsite"
+	| "typstOfficialDocs"
+	| "openOfficialDocs"
+	| "tableOfContents"
+	| "footer"
 	| "previousPage"
 	| "nextPage"
-	| "footer";
+	// Site notice
+	| "siteNoticeBannerTitle"
+	| "siteNoticeBannerDescription";
 
 export type TranslationComponentProps =
 	| { translationKey: TranslationComponentKey }
-	| { translationKey: "definitionOf"; name: string };
+	| { translationKey: "definitionsOf"; name: string };
 
 /**
  * Translation component for UI text, descriptions, and other content to be embedded as JSX.
  *
  * @example
- * <Translation translationKey="definition" />
+ * <Translation translationKey="definitions" />
  */
 export type TranslationComponent = FC<TranslationComponentProps>;
 

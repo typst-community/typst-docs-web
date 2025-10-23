@@ -30,7 +30,7 @@ export const CategoryTemplate: FC<CategoryTemplateProps> = ({
 			{page.body.content.items.length > 0 && (
 				<>
 					<h2 id="definitions">
-						<Translation translationKey="definition" />
+						<Translation translationKey="definitions" />
 					</h2>
 					<ul class="subgridded">
 						{page.body.content.items.map((item) => (

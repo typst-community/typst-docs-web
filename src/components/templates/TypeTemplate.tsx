@@ -53,7 +53,7 @@ export const TypeTemplate: FC<TypeTemplateProps> = ({
 			{content.scope.length > 0 && (
 				<>
 					<h2 id="definitions" class="flex items-center gap-1">
-						<Translation translationKey="definition" />
+						<Translation translationKey="definitions" />
 						<Tooltip kind="definitions" />
 					</h2>
 

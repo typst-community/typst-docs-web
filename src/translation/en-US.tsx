@@ -14,41 +14,23 @@ export const translation: TranslationObject = {
 	showInformation: (props: { name: string }) =>
 		`Show details for ${props.name}`,
 	tooltipKind: (props: { kind: TooltipProps["kind"] }) => {
-		switch (props.kind) {
-			case "element":
-				return "Element";
-			case "contextual":
-				return "Contextual";
-			case "definitions":
-				return "Definition";
-			case "parameters":
-				return "Parameter";
-			case "variadic":
-				return "Variadic";
-			case "settable":
-				return "Settable";
-			case "positional":
-				return "Positional";
-			case "required":
-				return "Required";
-			default:
-				return props.kind;
-		}
+		const map: Record<TooltipProps["kind"], string> = {
+			element: "Element",
+			contextual: "Contextual",
+			constructor: "Constructor",
+			definitions: "Definitions",
+			parameters: "Parameters",
+			variadic: "Variadic",
+			settable: "Settable",
+			positional: "Positional",
+			required: "Required",
+		};
+		return map[props.kind];
 	},
 } as const;
 
 export const Translation: TranslationComponent = (props) => {
 	switch (props.translationKey) {
-		case "definition":
-			return <Fragment>Definition</Fragment>;
-		case "constructor":
-			return <Fragment>Constructor</Fragment>;
-		case "definitionOf":
-			return (
-				<Fragment>
-					<code>{props.name}</code> Definition
-				</Fragment>
-			);
 		case "search":
 			return <Fragment>Search</Fragment>;
 		case "defaultValue":
@@ -128,9 +110,24 @@ export const Translation: TranslationComponent = (props) => {
 					Context functions can only be used when the context is known.
 				</Fragment>
 			);
-		case "definitionTooltip":
-			return <Fragment>Definition</Fragment>;
-		case "definitionTooltipDescription":
+		case "constructor":
+			return <Fragment>Constructor</Fragment>;
+		case "constructorDescription":
+			return (
+				<Fragment>
+					If a type has a constructor, you can call it like a function to create
+					a new value of the type.
+				</Fragment>
+			);
+		case "definitionsOf":
+			return (
+				<Fragment>
+					Definitions of <code>{props.name}</code>
+				</Fragment>
+			);
+		case "definitions":
+			return <Fragment>Definitions</Fragment>;
+		case "definitionsDescription":
 			return (
 				<Fragment>
 					These functions and types can have related definitions. To access a
@@ -138,9 +135,9 @@ export const Translation: TranslationComponent = (props) => {
 					definition name separated by a period.
 				</Fragment>
 			);
-		case "argument":
+		case "parameters":
 			return <Fragment>Parameter</Fragment>;
-		case "argumentDescription":
+		case "parametersDescription":
 			return (
 				<Fragment>
 					Parameters are input values for functions. Specify them in parentheses
