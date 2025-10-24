@@ -43,7 +43,7 @@ jobs:
       matrix:
         kind: [official]
         tag:
-          - v0.14.0-rc.1
+          - v0.14.0
           - main.2025-09-19.586b049
           - v0.13.1
           # These are `docs-*` tags in https://github.com/typst-community/dev-builds.
