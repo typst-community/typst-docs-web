@@ -17,6 +17,9 @@ jobs:
           - task: biome
             name: "Run Biome CI"
             command: "bun biome ci ."
+          - task: type-check
+            name: "Run TypeScript type check"
+            command: "bun run type-check"
           - task: vitest
             name: "Run test runner"
             command: "bun run test"
