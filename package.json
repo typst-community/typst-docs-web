@@ -8,6 +8,7 @@
 		"update-search-index": "pagefind --site ./dist/ --glob \"**/*.html\"",
 		"check": "biome check .",
 		"check:write": "biome check --write .",
+		"type-check": "tsc --noEmit --skipLibCheck",
 		"test": "vitest",
 		"fetch-docs-ja-jp": "for f in docs metadata translation-status; do wget --output-document public/$f.json https://typst-jp.github.io/docs/$f.json; done"
 	},
