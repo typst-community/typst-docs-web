@@ -79,7 +79,7 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 			</div>
 
 			<div class="my-6">
-				<FunctionParameters func={content} />
+				<FunctionParameters params={content.params} />
 			</div>
 
 			<ScopedDefinitions scope={content.scope} />

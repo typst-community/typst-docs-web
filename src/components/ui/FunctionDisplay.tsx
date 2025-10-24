@@ -60,7 +60,7 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 			</div>
 
 			<div class="my-4">
-				<FunctionParameters func={func} prefix={prefix} />
+				<FunctionParameters params={func.params} prefix={prefix} />
 			</div>
 		</>
 	);

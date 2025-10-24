@@ -79,7 +79,7 @@ export type Func = {
 } & WithDeprecation &
 	WithDetailsBlocks;
 
-type Param = {
+export type Param = {
 	name: string;
 	types: string[];
 	strings: Str[];

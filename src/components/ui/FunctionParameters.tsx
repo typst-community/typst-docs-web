@@ -1,7 +1,7 @@
 import type { FC } from "hono/jsx";
 import { basePath } from "../../metadata";
 import { Translation } from "../../translation/";
-import type { Func } from "../../types/model";
+import type { Param } from "../../types/model";
 import { normalizeDetailBlocks } from "../../utils/normalizeModel";
 import { joinPath } from "../../utils/path";
 import { ChevronRightIcon } from "../icons";
@@ -11,7 +11,9 @@ import { TypeIcon } from "./TypeIcon";
 import { buildParamId, type2href } from "./type2href";
 
 type FunctionParametersProps = {
-	func: Func;
+	params: Param[];
+	/** Whether these parameter are global attributes */
+	globalAttributes?: boolean;
 	/**
 	 * The prefix for IDs
 	 *
@@ -21,17 +23,19 @@ type FunctionParametersProps = {
 };
 
 export const FunctionParameters: FC<FunctionParametersProps> = ({
-	func,
+	params,
+	globalAttributes = false,
 	prefix = undefined,
 }) => {
+	const Heading = globalAttributes ? "h3" : "h4";
 	return (
 		<div class="space-y-6">
-			{func.params.map((param, _index) => (
+			{params.map((param, _index) => (
 				<div
 					key={param.name}
 					class="bg-gray-50 rounded-md p-4 border border-gray-100"
 				>
-					<h4
+					<Heading
 						id={buildParamId(param.name, prefix)}
 						class="flex flex-wrap items-center gap-2 mb-3"
 					>
@@ -57,7 +61,7 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 							{param.variadic && <Tooltip kind="variadic" />}
 							{param.settable && <Tooltip kind="settable" />}
 						</div>
-					</h4>
+					</Heading>
 
 					{normalizeDetailBlocks(param).map((block) => {
 						switch (block.kind) {
