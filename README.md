@@ -90,7 +90,7 @@ bun run build
 bun run preview
 ```
 
-### Check
+### Biome check
 
 ```sh
 # Check code style
@@ -98,6 +98,12 @@ bun run check
 
 # Apply automatic code fixes
 bun run check:write
+```
+
+### Type check
+
+```sh
+bun run type-check
 ```
 
 ### Test
