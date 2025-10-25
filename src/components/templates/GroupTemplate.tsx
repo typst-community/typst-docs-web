@@ -1,6 +1,7 @@
 import type { FC } from "hono/jsx";
+import { Translation } from "../../translation/index.js";
 import type { GroupBody, Page } from "../../types/model";
-import { FunctionDisplay, Tooltip } from "../ui";
+import { FunctionDisplay, FunctionParameters, Tooltip } from "../ui";
 import { HtmlContent } from "../ui/HtmlContent";
 import BaseTemplate, { type BaseTemplateProps } from "./BaseTemplate";
 
@@ -50,6 +51,19 @@ export const GroupTemplate: FC<GroupTemplateProps> = ({
 							/>
 						</div>
 					))}
+				</>
+			)}
+
+			{content.global_attributes && content.global_attributes.length > 0 && (
+				<>
+					<h2 id="global-attributes">
+						<Translation translationKey="globalAttributes" />
+					</h2>
+					<FunctionParameters
+						params={content.global_attributes}
+						globalAttributes={true}
+						prefix="global-attributes"
+					/>
 				</>
 			)}
 		</BaseTemplate>

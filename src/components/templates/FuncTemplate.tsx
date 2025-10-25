@@ -2,6 +2,10 @@ import type { FC } from "hono/jsx";
 import { Translation } from "../../translation/";
 import type { Func, FuncBody, Page } from "../../types/model";
 import {
+	normalizeDeprecation,
+	normalizeDetailBlocks,
+} from "../../utils/normalizeModel.js";
+import {
 	FunctionDefinition,
 	FunctionDisplay,
 	FunctionParameters,
@@ -42,15 +46,28 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 				</small>
 			</h1>
 
-			{content.deprecation && (
-				<div className="mt-2">
-					<DeprecationWarning message={content.deprecation} />
-				</div>
-			)}
+			{<DeprecationWarning item={content} level="top" />}
 
-			<div class="my-4 text-gray-700">
-				<HtmlContent html={content.details} />
-			</div>
+			{normalizeDetailBlocks(content).map((block) => {
+				switch (block.kind) {
+					case "html":
+						return (
+							<div class="my-4 text-gray-700">
+								<HtmlContent html={block.content} />
+							</div>
+						);
+					case "example":
+						// This will never reach for Typst v0.13.1 and v0.14.0-rc.1 documentations.
+						return (
+							<div class="my-6 bg-gray-50 p-4 rounded-md border border-gray-200">
+								{block.content.title}
+								<HtmlContent html={block.content.body} />
+							</div>
+						);
+					default:
+						return null;
+				}
+			})}
 
 			<h2 id="parameters" class="flex items-baseline gap-1">
 				<Translation translationKey="parameters" />
@@ -61,14 +78,8 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 				<FunctionDefinition func={content} />
 			</div>
 
-			{content.example && (
-				<div class="my-6 bg-gray-50 p-4 rounded-md border border-gray-200">
-					<HtmlContent html={content.example} />
-				</div>
-			)}
-
 			<div class="my-6">
-				<FunctionParameters func={content} />
+				<FunctionParameters params={content.params} />
 			</div>
 
 			<ScopedDefinitions scope={content.scope} />
@@ -121,7 +132,7 @@ function ScopedDefinitions({
 							<code
 								class="text-base font-medium"
 								style={
-									method.deprecation
+									normalizeDeprecation(method) !== null
 										? { textDecoration: "line-through" }
 										: undefined
 								}
@@ -135,11 +146,7 @@ function ScopedDefinitions({
 							</small>
 						</h3>
 
-						{method.deprecation && (
-							<div className="mt-1">
-								<DeprecationWarning message={method.deprecation} />
-							</div>
-						)}
+						{<DeprecationWarning item={method} level="scoped" />}
 
 						<div class="pl-2">
 							<FunctionDisplay func={method} prefix={methodId} />

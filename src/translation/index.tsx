@@ -52,13 +52,14 @@ type TranslationComponentKey =
 	| "required"
 	| "requiredDescription"
 	// Other texts in documentation
+	// Don't forget `deprecationWarning` and `showExample` declared below.
 	| "tutorial"
 	| "tutorialDescription"
 	| "reference"
 	| "referenceDescription"
+	| "globalAttributes"
 	| "defaultValue"
 	| "stringValues"
-	| "showExample"
 	// Translation statuses
 	| "untranslated"
 	| "untranslatedMessage"
@@ -86,7 +87,14 @@ type TranslationComponentKey =
 
 export type TranslationComponentProps =
 	| { translationKey: TranslationComponentKey }
-	| { translationKey: "definitionsOf"; name: string };
+	| { translationKey: "definitionsOf"; name: string }
+	| {
+			translationKey: "deprecationWarning";
+			message: string;
+			/** A Typst version, e.g. "0.15.0". */
+			until: string | null;
+	  }
+	| { translationKey: "showExample"; title: string | null };
 
 /**
  * Translation component for UI text, descriptions, and other content to be embedded as JSX.

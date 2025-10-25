@@ -42,8 +42,21 @@ export const Translation: TranslationComponent = (props) => {
 			return <Fragment>デフォルト値：</Fragment>;
 		case "stringValues":
 			return <Fragment>使用可能な文字列値</Fragment>;
+		case "deprecationWarning":
+			return props.until ? (
+				// TODO: Translate this. Don't forget to change `;` to `；`.
+				<Fragment>
+					{props.message}; it will be removed in Typst {props.until}
+				</Fragment>
+			) : (
+				<Fragment>{props.message}</Fragment>
+			);
 		case "showExample":
-			return <Fragment>例を表示</Fragment>;
+			return props.title ? (
+				<Fragment>例を表示：{props.title}</Fragment>
+			) : (
+				<Fragment>例を表示</Fragment>
+			);
 		case "tableOfContents":
 			return <Fragment>目次</Fragment>;
 		case "nextPage":
@@ -136,6 +149,9 @@ export const Translation: TranslationComponent = (props) => {
 					これらの関数や型には、関連する定義を持たせることができます。定義にアクセスするには、対象の関数や型の名前を指定した後に、ピリオド区切りで定義名を記述します。
 				</Fragment>
 			);
+		case "globalAttributes":
+			// TODO: Translate this
+			return <Fragment>Global Attributes</Fragment>;
 		case "parameters":
 			return <Fragment>引数</Fragment>;
 		case "parametersDescription":
