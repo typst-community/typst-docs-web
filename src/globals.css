@@ -102,11 +102,11 @@ samp {
 }
 
 .previewed-code .preview {
-	@apply flex-1 bg-gray-200 flex items-center justify-center p-4;
+	@apply flex-1 flex-wrap bg-gray-200 flex items-center justify-center p-4;
 }
 
 .previewed-code .preview img {
-	@apply max-w-full max-h-96;
+	@apply max-w-full max-h-96 my-2;
 }
 
 /*
