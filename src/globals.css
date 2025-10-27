@@ -94,7 +94,7 @@ samp {
 
 /* Previewed code block with side-by-side layout */
 .previewed-code {
-	@apply rounded-md overflow-hidden flex;
+	@apply rounded-md overflow-hidden flex flex-col lg:flex-row;
 }
 
 .previewed-code pre {
