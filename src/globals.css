@@ -94,15 +94,15 @@ samp {
 
 /* Previewed code block with side-by-side layout */
 .previewed-code {
-	@apply rounded-md overflow-hidden flex flex-col lg:flex-row;
+	@apply rounded-md overflow-hidden flex flex-col lg:flex-row lg:flex-wrap;
 }
 
 .previewed-code pre {
-	@apply flex-1 m-0 rounded-none whitespace-pre;
+	@apply flex-1 m-0 rounded-none whitespace-pre lg:flex-[1_0_auto];
 }
 
 .previewed-code .preview {
-	@apply flex-1 flex-wrap bg-gray-200 flex items-center justify-center p-4;
+	@apply flex-1 flex-wrap bg-gray-200 flex items-center justify-center p-4 lg:min-w-1/2;
 }
 
 .previewed-code .preview img {
