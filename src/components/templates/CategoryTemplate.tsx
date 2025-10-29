@@ -40,7 +40,9 @@ export const CategoryTemplate: FC<CategoryTemplateProps> = ({
 										{item.code ? <code>{item.name}</code> : item.name}
 									</a>
 								</div>
-								<div class="pl-4">{item.oneliner}</div>
+								<div>
+									<p>{item.oneliner}</p>
+								</div>
 							</li>
 						))}
 					</ul>

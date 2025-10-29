@@ -37,11 +37,13 @@ export const GroupTemplate: FC<GroupTemplateProps> = ({
 
 					{content.functions.map((method, _index) => (
 						<div key={method.name}>
-							<h3 id={`functions-${method.name}`} class="method-head">
-								<code class="text-base font-medium">{method.name}</code>
-								<div class="flex flex-wrap items-center gap-2 text-sm">
-									{method.element && <Tooltip kind="element" />}
-									{method.contextual && <Tooltip kind="contextual" />}
+							<h3 id={`functions-${method.name}`} class="flex">
+								<div class="flex items-center gap-2">
+									<code class="text-base font-medium">{method.name}</code>
+									<div class="flex flex-wrap items-center gap-2 text-sm">
+										{method.element && <Tooltip kind="element" />}
+										{method.contextual && <Tooltip kind="contextual" />}
+									</div>
 								</div>
 							</h3>
 							<FunctionDisplay
