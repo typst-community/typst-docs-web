@@ -117,7 +117,7 @@ build_en_US v0.13.1
 
 # 3.2. Build ja-JP
 
-# Prepare files
+# Prepare JSON files
 mise exec -- bun run fetch-docs-ja-jp
 sd '"/docs/' '"/ja-JP/' public/docs.json
 sd --fixed-strings \
@@ -125,9 +125,17 @@ sd --fixed-strings \
   '"basePath": "/ja-JP/",' \
   public/metadata.json
 
+# Prepare docs assets
+# At present, typst-jp do not translate comments within example code.
+# And there is no simple way to download assets from GitHub Actions or the gh-pages branch.
+# Therefore, we reuse the assets from the official version.
+curl -LO https://github.com/typst-community/dev-builds/releases/download/docs-v0.13.1/docs-assets.zip
+unzip docs-assets.zip && rm docs-assets.zip
+mv assets public/assets
+
 # Build
 mise exec -- bun run build
 mv dist _site/ja-JP
 
 # Clean
-rm -r public/{docs,metadata,translation-status}.json
+rm -r public/{docs,metadata,translation-status}.json public/assets
