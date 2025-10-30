@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-# 1. Install tools
+# 1. Install tools and dependencies
 
 curl https://mise.run | sh
-# 2. Install dependencies
-
 mise trust
 mise install
 mise exec -- bun install --frozen-lockfile
 
-# 3. Prepare common files
+# 2. Prepare common files
 
 mkdir _site
 
@@ -69,8 +67,8 @@ cat << EOF > _site/index.html
 </html>
 EOF
 
-# 4. Build
-# 4.1. Build en-US
+# 3. Build
+# 3.1. Build en-US
 
 build_en_US() {
   local VERSION="$1"
@@ -98,12 +96,12 @@ build_en_US() {
   "githubOrganizationUrl": "https://github.com/typst-community",
   "githubRepositoryUrl": "https://github.com/typst-community/typst-docs-web",
   "discordServerUrl": "https://discord.gg/2uDybryKPe",
-  "originUrl": "$DEPLOY_URL/",
+  "originUrl": "${DEPLOY_URL:-https://example.com}/",
   "basePath": "/$BASE/",
   "displayTranslationStatus": false
 }
 EOF
-  # $DEPLOY_URL is set by netlify.
+  # $DEPLOY_URL will be set by netlify. Fallback to example.com for local testing.
   # https://docs.netlify.com/build/configure-builds/environment-variables/#deploy-urls-and-metadata
 
   # Build
@@ -117,7 +115,7 @@ EOF
 build_en_US v0.14.0
 build_en_US v0.13.1
 
-# 4.2. Build ja-JP
+# 3.2. Build ja-JP
 
 # Prepare files
 mise exec -- bun run fetch-docs-ja-jp
