@@ -3,14 +3,12 @@ set -euxo pipefail
 
 # 1. Install tools
 
-curl -sS https://webi.sh/sd | sh && source ~/.config/envman/PATH.env
 curl https://mise.run | sh
-
 # 2. Install dependencies
 
 mise trust
 mise install
-mise exec -- bun install
+mise exec -- bun install --frozen-lockfile
 
 # 3. Prepare common files
 
