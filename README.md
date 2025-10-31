@@ -115,6 +115,7 @@ bun run test
 ## Maintainers
 
 - [@3w36zj6](https://github.com/3w36zj6)
+- [@YDX-2147483647](https://github.com/YDX-2147483647)
 
 ## License
 
