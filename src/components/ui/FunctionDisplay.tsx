@@ -32,7 +32,7 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 					case "example":
 						return isExampleFolding ? (
 							<details class="folding-example group">
-								<summary class="flex items-center gap-1 text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800">
+								<summary class="flex items-center gap-1 text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800 marker:hidden">
 									<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 										<ChevronRightIcon />
 									</div>
