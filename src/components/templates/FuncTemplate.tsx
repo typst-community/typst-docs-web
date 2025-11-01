@@ -69,16 +69,18 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 				}
 			})}
 
-			<h2 id="parameters" class="flex items-baseline gap-1">
-				<Translation translationKey="parameters" />
-				<Tooltip kind="parameters" />
+			<h2 id="parameters" class="flex">
+				<div class="flex items-baseline gap-1">
+					<Translation translationKey="parameters" />
+					<Tooltip kind="parameters" />
+				</div>
 			</h2>
 
-			<div class="mb-6">
+			<div class="my-4">
 				<FunctionDefinition func={content} />
 			</div>
 
-			<div class="my-6">
+			<div class="my-4">
 				<FunctionParameters params={content.params} />
 			</div>
 
@@ -109,48 +111,47 @@ function ScopedDefinitions({
 	// the following heading levels will _not_ increase with the scope level.
 	return (
 		<div class="mt-8">
-			<h2 id={`${parentId}definitions`} class="flex items-baseline gap-1">
-				{parent ? (
-					// Currently, the scope has at most two levels.
-					// Therefore, it is sufficient to only annotate the direct `parent`.
-					<Translation translationKey="definitionsOf" name={parent.name} />
-				) : (
-					<Translation translationKey="definitions" />
-				)}
-				<Tooltip kind="definitions" />
+			<h2 id={`${parentId}definitions`} class="flex">
+				<div class="flex items-baseline gap-1">
+					{parent ? (
+						// Currently, the scope has at most two levels.
+						// Therefore, it is sufficient to only annotate the direct `parent`.
+						<Translation translationKey="definitionsOf" name={parent.name} />
+					) : (
+						<Translation translationKey="definitions" />
+					)}
+					<Tooltip kind="definitions" />
+				</div>
 			</h2>
 
 			{scope.map((method, _index) => {
 				const methodId = `${parentId}definitions-${method.name}`;
 
 				return (
-					<div
-						key={method.name}
-						class="mb-8 pb-6 border-b border-gray-100 last:border-0"
-					>
-						<h3 id={methodId} class="method-head mb-3 flex items-center gap-2">
-							<code
-								class="text-base font-medium"
-								style={
-									normalizeDeprecation(method) !== null
-										? { textDecoration: "line-through" }
-										: undefined
-								}
-							>
-								{method.name}
-							</code>
+					<div key={method.name}>
+						<h3 id={methodId} class="flex">
+							<div class="flex items-center gap-2">
+								<code
+									class="text-base font-medium"
+									style={
+										normalizeDeprecation(method) !== null
+											? { textDecoration: "line-through" }
+											: undefined
+									}
+								>
+									{method.name}
+								</code>
 
-							<small class="flex items-center">
-								{method.element && <Tooltip kind="element" />}
-								{method.contextual && <Tooltip kind="contextual" />}
-							</small>
+								<small class="flex items-center">
+									{method.element && <Tooltip kind="element" />}
+									{method.contextual && <Tooltip kind="contextual" />}
+								</small>
+							</div>
 						</h3>
 
 						{<DeprecationWarning item={method} level="scoped" />}
 
-						<div class="pl-2">
-							<FunctionDisplay func={method} prefix={methodId} />
-						</div>
+						<FunctionDisplay func={method} prefix={methodId} />
 
 						<ScopedDefinitions
 							scope={method.scope}

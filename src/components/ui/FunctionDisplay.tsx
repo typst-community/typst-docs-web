@@ -32,7 +32,7 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 					case "example":
 						return isExampleFolding ? (
 							<details class="folding-example group">
-								<summary class="flex items-center gap-1 text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800">
+								<summary class="flex items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors">
 									<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 										<ChevronRightIcon />
 									</div>
@@ -41,14 +41,12 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 										title={block.content.title}
 									/>
 								</summary>
-								<div class="mt-2 bg-white p-3 rounded-md border border-gray-200 text-sm">
+								<div class="my-4">
 									<HtmlContent html={block.content.body} />
 								</div>
 							</details>
 						) : (
-							<div class="bg-gray-50 p-4 rounded-md border border-gray-200">
-								<HtmlContent html={block.content.body} />
-							</div>
+							<HtmlContent html={block.content.body} />
 						);
 					default:
 						return null;

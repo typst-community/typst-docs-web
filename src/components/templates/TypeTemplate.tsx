@@ -37,9 +37,11 @@ export const TypeTemplate: FC<TypeTemplateProps> = ({
 
 			{content.constructor && (
 				<>
-					<h2 id="constructor" class="flex items-center gap-1">
-						<Translation translationKey="constructor" />
-						<Tooltip kind="parameters" />
+					<h2 id="constructor" class="flex">
+						<div class="flex items-center gap-1">
+							<Translation translationKey="constructor" />
+							<Tooltip kind="parameters" />
+						</div>
 					</h2>
 
 					<FunctionDisplay
@@ -52,21 +54,22 @@ export const TypeTemplate: FC<TypeTemplateProps> = ({
 
 			{content.scope.length > 0 && (
 				<>
-					<h2 id="definitions" class="flex items-center gap-1">
-						<Translation translationKey="definitions" />
-						<Tooltip kind="definitions" />
+					<h2 id="definitions" class="flex">
+						<div class="flex items-center gap-1">
+							<Translation translationKey="definitions" />
+							<Tooltip kind="definitions" />
+						</div>
 					</h2>
 
 					{content.scope.map((method, _index) => (
 						<div key={method.name}>
-							<h3
-								id={`definitions-${method.name}`}
-								class="method-head flex items-center gap-2 mb-3"
-							>
-								<code class="text-base font-medium">{method.name}</code>
-								<div class="flex flex-wrap items-center gap-2">
-									{method.element && <Tooltip kind="element" />}
-									{method.contextual && <Tooltip kind="contextual" />}
+							<h3 id={`definitions-${method.name}`} class="flex">
+								<div class="flex items-center gap-2">
+									<code class="text-base font-medium">{method.name}</code>
+									<div class="flex flex-wrap items-center gap-2">
+										{method.element && <Tooltip kind="element" />}
+										{method.contextual && <Tooltip kind="contextual" />}
+									</div>
 								</div>
 							</h3>
 

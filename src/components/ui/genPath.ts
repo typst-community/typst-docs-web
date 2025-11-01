@@ -7,5 +7,5 @@ import type { Func } from "../../types/model";
  * @returns - The concatenated path string
  */
 export const genPath = (item: Func): string => {
-	return item.path.map((s) => `${s}.`).join("");
+	return item.path.join(".");
 };
