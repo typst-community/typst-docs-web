@@ -72,7 +72,7 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 							case "example":
 								return (
 									<details class="folding-example group">
-										<summary class="flex my-4 items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors">
+										<summary class="flex my-4 items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors marker:hidden">
 											<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 												<ChevronRightIcon />
 											</div>
@@ -97,7 +97,7 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 							// The list of strings can be very long. For example, `page.paper` has 100+ possibilities.
 							open={param.strings.length <= 5}
 						>
-							<summary class="flex my-4 items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors">
+							<summary class="flex my-4 items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors marker:hidden">
 								<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 									<ChevronRightIcon />
 								</div>

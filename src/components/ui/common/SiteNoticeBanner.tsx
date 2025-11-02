@@ -1,14 +1,16 @@
+import { basePath } from "../../../metadata";
 import { Translation } from "../../../translation/";
 import { InfoCircleIcon } from "../../icons";
 
 export const SiteNoticeBanner = () => {
+	const storageKey = `typst-docs-web${basePath.replace(/\//g, "-")}banner-hidden`;
 	return (
 		<div
-			x-data="{
+			x-data={`{
         bannerVisible: false,
         bannerVisibleAfter: 300,
         checkBannerStatus() {
-          const isBannerHidden = localStorage.getItem('typst-jp-banner-hidden') === 'true';
+          const isBannerHidden = localStorage.getItem('${storageKey}') === 'true';
           if (!isBannerHidden) {
             setTimeout(() => {
               this.bannerVisible = true;
@@ -18,9 +20,9 @@ export const SiteNoticeBanner = () => {
         },
         hideBanner() {
           this.bannerVisible = false;
-          localStorage.setItem('typst-jp-banner-hidden', 'true');
+          localStorage.setItem('${storageKey}', 'true');
         }
-      }"
+      }`}
 			x-init="checkBannerStatus()"
 			x-show="bannerVisible"
 			x-transition:enter="transition ease-out duration-500"
