@@ -98,7 +98,7 @@ samp {
 }
 
 .previewed-code pre {
-	@apply flex-1 m-0 rounded-none whitespace-pre lg:flex-[1_0_auto];
+	@apply flex-1 m-0 rounded-none whitespace-pre overflow-x-auto lg:flex-[1_0_auto];
 }
 
 .previewed-code .preview {
