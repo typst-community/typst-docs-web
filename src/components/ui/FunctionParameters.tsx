@@ -121,7 +121,7 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 					)}
 
 					{param.default && (
-						<div class="flex flex-wrap items-start gap-2">
+						<div class="flex flex-wrap items-center gap-2">
 							<Translation translationKey="defaultValue" />
 							<HtmlContent html={param.default} />
 						</div>
