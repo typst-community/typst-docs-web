@@ -32,16 +32,16 @@ export const CategoryTemplate: FC<CategoryTemplateProps> = ({
 					<h2 id="definitions">
 						<Translation translationKey="definitions" />
 					</h2>
-					<ul class="subgridded">
+					<ul>
 						{page.body.content.items.map((item) => (
 							<li key={item.route}>
-								<div>
-									<a href={item.route}>
-										{item.code ? <code>{item.name}</code> : item.name}
-									</a>
-								</div>
-								<div>
-									<p>{item.oneliner}</p>
+								<div class="flex">
+									<div class="min-w-[8rem]">
+										<a href={item.route}>
+											{item.code ? <code>{item.name}</code> : item.name}
+										</a>
+									</div>
+									<div>{item.oneliner}</div>
 								</div>
 							</li>
 						))}
