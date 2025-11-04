@@ -52,14 +52,14 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 				switch (block.kind) {
 					case "html":
 						return (
-							<div class="my-4 text-gray-700">
+							<div class="text-gray-700">
 								<HtmlContent html={block.content} />
 							</div>
 						);
 					case "example":
 						// This will never reach for Typst v0.13.1 and v0.14.0-rc.1 documentations.
 						return (
-							<div class="my-6 bg-gray-50 p-4 rounded-md border border-gray-200">
+							<div>
 								{block.content.title}
 								<HtmlContent html={block.content.body} />
 							</div>
@@ -75,15 +75,8 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 					<Tooltip kind="parameters" />
 				</div>
 			</h2>
-
-			<div class="my-4">
-				<FunctionDefinition func={content} />
-			</div>
-
-			<div class="my-4">
-				<FunctionParameters params={content.params} />
-			</div>
-
+			<FunctionDefinition func={content} />
+			<FunctionParameters params={content.params} />
 			<ScopedDefinitions scope={content.scope} />
 		</BaseTemplate>
 	);

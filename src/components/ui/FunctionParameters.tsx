@@ -81,7 +81,7 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 												title={block.content.title}
 											/>
 										</summary>
-										<div class="my-4">
+										<div>
 											<HtmlContent html={block.content.body} />
 										</div>
 									</details>

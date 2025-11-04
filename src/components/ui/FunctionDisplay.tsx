@@ -41,7 +41,7 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 										title={block.content.title}
 									/>
 								</summary>
-								<div class="my-4">
+								<div>
 									<HtmlContent html={block.content.body} />
 								</div>
 							</details>
@@ -52,14 +52,8 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 						return null;
 				}
 			})}
-
-			<div class="my-4">
-				<FunctionDefinition func={func} prefix={prefix} />
-			</div>
-
-			<div class="my-4">
-				<FunctionParameters params={func.params} prefix={prefix} />
-			</div>
+			<FunctionDefinition func={func} prefix={prefix} />
+			<FunctionParameters params={func.params} prefix={prefix} />
 		</>
 	);
 };
