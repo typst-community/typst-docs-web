@@ -18,7 +18,7 @@ export const HtmlContent: FC<HtmlContentProps> = ({ html }) => {
 				"[&_img]:w-auto",
 				"[&_pre]:overflow-x-auto",
 				"[&_pre]:max-w-full",
-				"[&_pre]:whitespace-pre-wrap",
+				"[&_pre]:whitespace-pre",
 				"[&_pre]:break-all",
 				"[&_pre_code]:block",
 				"[&_pre_code]:w-full",

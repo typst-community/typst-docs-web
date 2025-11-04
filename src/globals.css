@@ -92,6 +92,23 @@ samp {
 	}
 }
 
+/* Previewed code block with side-by-side layout */
+.previewed-code {
+	@apply rounded-md overflow-hidden flex flex-col lg:flex-row lg:flex-wrap mb-4;
+}
+
+.previewed-code pre {
+	@apply flex-1 m-0 rounded-none whitespace-pre overflow-x-auto lg:flex-[1_0_auto];
+}
+
+.previewed-code .preview {
+	@apply flex-1 flex-wrap bg-gray-200 flex items-center justify-center p-4 lg:min-w-1/2;
+}
+
+.previewed-code .preview img {
+	@apply max-w-full max-h-96 my-2;
+}
+
 /*
 Code block styles for Typst Light theme
 
@@ -170,6 +187,7 @@ code span.typ-error {
 	border-radius: 2px;
 }
 pre {
-	background: #f6f8fa;
+	/* Override typst-docs provided styles. */
+	background: #f6f8fa !important;
 	color: #1f2328;
 }

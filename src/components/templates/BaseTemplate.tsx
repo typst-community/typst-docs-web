@@ -176,7 +176,7 @@ export const BaseTemplate: FC<BaseTemplateProps> = ({
 						x-transition:leave-end="opacity-0"
 						x-on:click="sidebarOpen = false"
 					/>
-					<div class="container mx-auto max-w-8xl px-4 sm:px-6 lg:px-8 flex relative">
+					<div class="container mx-auto max-w-8xl px-4 sm:px-6 lg:px-8 lg:flex relative">
 						<div
 							x-cloak
 							class="fixed inset-y-0 left-0 w-64 bg-white shadow-xl z-30 transform transition-transform duration-300 ease-in-out lg:hidden"
