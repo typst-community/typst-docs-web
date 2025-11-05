@@ -5,11 +5,16 @@ export type HtmlContentProps = {
 	html: string;
 };
 
-export const HtmlContent: FC<HtmlContentProps> = ({ html }) => {
+export const HtmlBlock: FC<HtmlContentProps> = ({ html }) => {
 	return (
 		<div
 			class={twMerge([
 				"overflow-hidden",
+				// Move the margin for inner `<p>`s to the outer `<div>`, making it collapsible with sibling `<div>`s.
+				"mt-5",
+				"[&_p]:first:mt-0",
+				"mb-5",
+				"[&_p]:last:mb-0",
 				"[&_img]:mx-auto",
 				"[&_img]:block",
 				"[&_img]:max-w-full",
