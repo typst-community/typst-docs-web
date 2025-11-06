@@ -1,11 +1,11 @@
 import type { FC } from "hono/jsx";
 import { twMerge } from "tailwind-merge";
 
-export type HtmlContentProps = {
+export type HtmlBlockProps = {
 	html: string;
 };
 
-export const HtmlBlock: FC<HtmlContentProps> = ({ html }) => {
+export const HtmlBlock: FC<HtmlBlockProps> = ({ html }) => {
 	return (
 		<div
 			class={twMerge([
