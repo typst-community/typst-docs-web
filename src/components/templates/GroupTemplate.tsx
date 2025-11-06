@@ -1,6 +1,7 @@
 import type { FC } from "hono/jsx";
 import { Translation } from "../../translation/index.js";
 import type { GroupBody, Page } from "../../types/model";
+import { normalizeGlobalAttributes } from "../../utils/normalizeModel";
 import { FunctionDisplay, FunctionParameters, Tooltip } from "../ui";
 import { HtmlContent } from "../ui/HtmlContent";
 import BaseTemplate, { type BaseTemplateProps } from "./BaseTemplate";
@@ -19,6 +20,7 @@ export const GroupTemplate: FC<GroupTemplateProps> = ({
 	nextPage,
 }) => {
 	const content = page.body.content;
+	const globalAttributes = normalizeGlobalAttributes(content);
 
 	return (
 		<BaseTemplate
@@ -54,13 +56,13 @@ export const GroupTemplate: FC<GroupTemplateProps> = ({
 				</>
 			)}
 
-			{content.global_attributes && content.global_attributes.length > 0 && (
+			{globalAttributes && globalAttributes.length > 0 && (
 				<>
 					<h2 id="global-attributes">
 						<Translation translationKey="globalAttributes" />
 					</h2>
 					<FunctionParameters
-						params={content.global_attributes}
+						params={globalAttributes}
 						globalAttributes={true}
 						prefix="global-attributes"
 					/>

@@ -122,10 +122,16 @@ export type GroupBody = {
 		title: string;
 		details: Html;
 		functions: Func[];
-		/** Added in Typst v0.14.0-rc.1 (typst/typst#7083) */
-		global_attributes?: Param[];
-	};
+	} & WithGlobalAttributes;
 };
+
+export type WithGlobalAttributes =
+	// Corrected on 2025-11-05 after Typst v0.14.0 (typst/typst#7298)
+	| { globalAttributes?: Param[]; global_attributes?: never }
+	// Format from Typst v0.14.0-rc.1 to v0.14.0 (typst/typst#7083)
+	| { global_attributes: Param[]; globalAttributes?: never }
+	// Format for Typst v0.13.1
+	| { globalAttributes?: never; global_attributes?: never };
 
 export type TypeBody = {
 	kind: "type";

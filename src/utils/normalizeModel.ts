@@ -5,8 +5,10 @@
 
 import type {
 	DetailsBlock,
+	Param,
 	WithDeprecation,
 	WithDetailsBlocks,
+	WithGlobalAttributes,
 } from "../types/model";
 
 /**
@@ -55,4 +57,8 @@ export function normalizeDetailBlocks(item: WithDetailsBlocks): DetailsBlock[] {
 	}
 
 	return item.details;
+}
+
+export function normalizeGlobalAttributes(item: WithGlobalAttributes): Param[] {
+	return item.globalAttributes ?? item.global_attributes ?? [];
 }
