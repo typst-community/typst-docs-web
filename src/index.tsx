@@ -80,7 +80,7 @@ Please ensure both this site and typst-docs are configured with the same base pa
 		return c.notFound();
 	});
 	/**
-	 * The route provides the raw JSON data of the page for development or LLM purposes.
+	 * This route provides the raw JSON data of the page for development or LLM purposes.
 	 */
 	app.get(`${route}index.json`, (c) => {
 		const { children: _, ...pageWithoutChildren } = page;
