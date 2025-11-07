@@ -110,6 +110,36 @@ samp {
 }
 
 /*
+Typst-style markup heading decorations
+
+Top-level heading indicates a top-level section of the document rather than its title.
+*/
+.prose h2::before,
+.prose h3::before,
+.prose h4::before,
+.prose h5::before,
+.prose h6::before {
+	@apply text-gray-400;
+	margin-right: 1ch;
+}
+
+.prose h2::before {
+	content: "=";
+}
+.prose h3::before {
+	content: "==";
+}
+.prose h4::before {
+	content: "===";
+}
+.prose h5::before {
+	content: "====";
+}
+.prose h6::before {
+	content: "=====";
+}
+
+/*
 Code block styles for Typst Light theme
 
 cf.
