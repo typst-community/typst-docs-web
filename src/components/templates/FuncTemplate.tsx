@@ -12,7 +12,7 @@ import {
 	Tooltip,
 } from "../ui";
 import { DeprecationWarning } from "../ui/DeprecationWarning";
-import { HtmlContent } from "../ui/HtmlContent";
+import { HtmlBlock } from "../ui/HtmlBlock";
 import BaseTemplate, { type BaseTemplateProps } from "./BaseTemplate";
 
 export type FuncTemplateProps = Omit<BaseTemplateProps, "page"> & {
@@ -53,7 +53,7 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 					case "html":
 						return (
 							<div class="text-gray-700">
-								<HtmlContent html={block.content} />
+								<HtmlBlock html={block.content} />
 							</div>
 						);
 					case "example":
@@ -61,7 +61,7 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 						return (
 							<div>
 								{block.content.title}
-								<HtmlContent html={block.content.body} />
+								<HtmlBlock html={block.content.body} />
 							</div>
 						);
 					default:

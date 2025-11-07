@@ -2,7 +2,7 @@ import type { FC } from "hono/jsx";
 import { Translation } from "../../translation/";
 import type { Page, TypeBody } from "../../types/model";
 import { FunctionDisplay, Tooltip } from "../ui";
-import { HtmlContent } from "../ui/HtmlContent";
+import { HtmlBlock } from "../ui/HtmlBlock";
 import { TypeIcon } from "../ui/TypeIcon";
 import BaseTemplate, { type BaseTemplateProps } from "./BaseTemplate";
 
@@ -33,7 +33,7 @@ export const TypeTemplate: FC<TypeTemplateProps> = ({
 				<TypeIcon type={content.name} isHeading={true} />
 			</h1>
 
-			<HtmlContent html={content.details} />
+			<HtmlBlock html={content.details} />
 
 			{content.constructor && (
 				<>

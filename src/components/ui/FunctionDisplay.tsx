@@ -5,7 +5,7 @@ import { normalizeDetailBlocks } from "../../utils/normalizeModel.js";
 import { ChevronRightIcon } from "../icons";
 import { FunctionDefinition } from "./FunctionDefinition";
 import { FunctionParameters } from "./FunctionParameters";
-import { HtmlContent } from "./HtmlContent";
+import { HtmlBlock } from "./HtmlBlock";
 
 type FunctionDisplayProps = {
 	func: Func;
@@ -28,7 +28,7 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 			{normalizeDetailBlocks(func).map((block) => {
 				switch (block.kind) {
 					case "html":
-						return <HtmlContent html={block.content} />;
+						return <HtmlBlock html={block.content} />;
 					case "example":
 						return isExampleFolding ? (
 							<details class="folding-example group">
@@ -42,11 +42,11 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 									/>
 								</summary>
 								<div>
-									<HtmlContent html={block.content.body} />
+									<HtmlBlock html={block.content.body} />
 								</div>
 							</details>
 						) : (
-							<HtmlContent html={block.content.body} />
+							<HtmlBlock html={block.content.body} />
 						);
 					default:
 						return null;

@@ -5,7 +5,8 @@ import type { Param } from "../../types/model";
 import { normalizeDetailBlocks } from "../../utils/normalizeModel";
 import { joinPath } from "../../utils/path";
 import { ChevronRightIcon } from "../icons";
-import { HtmlContent } from "./HtmlContent";
+import { HtmlBlock } from "./HtmlBlock";
+import { HtmlInline } from "./HtmlInline";
 import { Tooltip } from "./Tooltip";
 import { TypeIcon } from "./TypeIcon";
 import { buildParamId, type2href } from "./type2href";
@@ -66,13 +67,13 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 							case "html":
 								return (
 									<div class="text-gray-700">
-										<HtmlContent html={block.content} />
+										<HtmlBlock html={block.content} />
 									</div>
 								);
 							case "example":
 								return (
-									<details class="folding-example group">
-										<summary class="flex my-4 items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors marker:hidden">
+									<details class="my-4 folding-example group">
+										<summary class="flex items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors marker:hidden">
 											<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 												<ChevronRightIcon />
 											</div>
@@ -82,7 +83,7 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 											/>
 										</summary>
 										<div>
-											<HtmlContent html={block.content.body} />
+											<HtmlBlock html={block.content.body} />
 										</div>
 									</details>
 								);
@@ -93,11 +94,11 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 
 					{param.strings.length > 0 && (
 						<details
-							class="folding-example group"
+							class="my-4 folding-example group"
 							// The list of strings can be very long. For example, `page.paper` has 100+ possibilities.
 							open={param.strings.length <= 5}
 						>
-							<summary class="flex my-4 items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors marker:hidden">
+							<summary class="flex items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors marker:hidden">
 								<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 									<ChevronRightIcon />
 								</div>
@@ -111,7 +112,7 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 												<code>{string.string}</code>
 											</div>
 											<div>
-												<HtmlContent html={string.details} />
+												<HtmlBlock html={string.details} />
 											</div>
 										</div>
 									</li>
@@ -121,10 +122,10 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 					)}
 
 					{param.default && (
-						<div class="flex flex-wrap items-center gap-2">
+						<p>
 							<Translation translationKey="defaultValue" />
-							<HtmlContent html={param.default} />
-						</div>
+							<HtmlInline html={param.default} />
+						</p>
 					)}
 				</div>
 			))}

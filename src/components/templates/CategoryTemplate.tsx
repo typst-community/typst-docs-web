@@ -1,7 +1,7 @@
 import type { FC } from "hono/jsx";
 import { Translation } from "../../translation/";
 import type { CategoryBody, Page } from "../../types/model";
-import { HtmlContent } from "../ui/HtmlContent";
+import { HtmlBlock } from "../ui/HtmlBlock";
 import BaseTemplate, { type BaseTemplateProps } from "./BaseTemplate";
 
 export type CategoryTemplateProps = Omit<BaseTemplateProps, "page"> & {
@@ -26,7 +26,7 @@ export const CategoryTemplate: FC<CategoryTemplateProps> = ({
 			nextPage={nextPage}
 		>
 			<h1 id="summary">{page.body.content.title}</h1>
-			<HtmlContent html={page.body.content.details} />
+			<HtmlBlock html={page.body.content.details} />
 			{page.body.content.items.length > 0 && (
 				<>
 					<h2 id="definitions">
