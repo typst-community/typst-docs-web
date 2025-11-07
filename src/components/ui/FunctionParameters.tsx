@@ -5,7 +5,8 @@ import type { Param } from "../../types/model";
 import { normalizeDetailBlocks } from "../../utils/normalizeModel";
 import { joinPath } from "../../utils/path";
 import { ChevronRightIcon } from "../icons";
-import { HtmlContent } from "./HtmlContent";
+import { HtmlBlock } from "./HtmlBlock";
+import { HtmlInline } from "./HtmlInline";
 import { Tooltip } from "./Tooltip";
 import { TypeIcon } from "./TypeIcon";
 import { buildParamId, type2href } from "./type2href";
@@ -31,35 +32,33 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 	return (
 		<div class="space-y-6">
 			{params.map((param, _index) => (
-				<div
-					key={param.name}
-					class="bg-gray-50 rounded-md p-4 border border-gray-100"
-				>
-					<Heading
-						id={buildParamId(param.name, prefix)}
-						class="flex flex-wrap items-center gap-2 mb-3"
-					>
-						<code class="text-base font-medium">{param.name}</code>
-						<div class="flex flex-wrap items-center gap-2 text-sm">
-							<div class="flex flex-wrap gap-1">
-								{param.types.map((t) => {
-									const href = type2href(t);
-									return (
-										<TypeIcon
-											key={t}
-											type={t}
-											href={
-												href ? joinPath(basePath, "reference", href) : undefined
-											}
-										/>
-									);
-								})}
-							</div>
+				<div>
+					<Heading id={buildParamId(param.name, prefix)} class="flex">
+						<div class="flex flex-wrap items-center gap-2">
+							<code class="text-base font-medium">{param.name}</code>
+							<div class="flex flex-wrap items-center gap-2 text-sm">
+								<div class="flex flex-wrap gap-1 font-normal">
+									{param.types.map((t) => {
+										const href = type2href(t);
+										return (
+											<TypeIcon
+												key={t}
+												type={t}
+												href={
+													href
+														? joinPath(basePath, "reference", href)
+														: undefined
+												}
+											/>
+										);
+									})}
+								</div>
 
-							{param.required && <Tooltip kind="required" />}
-							{param.positional && <Tooltip kind="positional" />}
-							{param.variadic && <Tooltip kind="variadic" />}
-							{param.settable && <Tooltip kind="settable" />}
+								{param.required && <Tooltip kind="required" />}
+								{param.positional && <Tooltip kind="positional" />}
+								{param.variadic && <Tooltip kind="variadic" />}
+								{param.settable && <Tooltip kind="settable" />}
+							</div>
 						</div>
 					</Heading>
 
@@ -68,13 +67,13 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 							case "html":
 								return (
 									<div class="text-gray-700">
-										<HtmlContent html={block.content} />
+										<HtmlBlock html={block.content} />
 									</div>
 								);
 							case "example":
 								return (
-									<details class="folding-example group">
-										<summary class="flex items-center gap-1 text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800 marker:hidden">
+									<details class="my-4 folding-example group">
+										<summary class="flex items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors marker:hidden">
 											<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 												<ChevronRightIcon />
 											</div>
@@ -83,8 +82,8 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 												title={block.content.title}
 											/>
 										</summary>
-										<div class="mt-2 bg-white p-3 rounded-md border border-gray-200 text-sm">
-											<HtmlContent html={block.content.body} />
+										<div>
+											<HtmlBlock html={block.content.body} />
 										</div>
 									</details>
 								);
@@ -99,21 +98,21 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 							// The list of strings can be very long. For example, `page.paper` has 100+ possibilities.
 							open={param.strings.length <= 5}
 						>
-							<summary class="flex items-center gap-1 text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800 marker:hidden">
+							<summary class="flex items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors marker:hidden">
 								<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 									<ChevronRightIcon />
 								</div>
 								<Translation translationKey="stringValues" />
 							</summary>
-							<ul class="type-args space-y-2">
+							<ul>
 								{param.strings.map((string) => (
 									<li key={string.string}>
-										<div class="break-box">
-											<div class="mb-1">
-												<code class="text-gray-800">{string.string}</code>
+										<div>
+											<div>
+												<code>{string.string}</code>
 											</div>
-											<div class="text-sm text-gray-700">
-												<HtmlContent html={string.details} />
+											<div>
+												<HtmlBlock html={string.details} />
 											</div>
 										</div>
 									</li>
@@ -123,13 +122,9 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 					)}
 
 					{param.default && (
-						<p class="mt-5 text-sm">
-							<span class="font-medium">
-								<Translation translationKey="defaultValue" />
-							</span>{" "}
-							<span class="text-gray-700">
-								<HtmlContent html={param.default} />
-							</span>
+						<p>
+							<Translation translationKey="defaultValue" />
+							<HtmlInline html={param.default} />
 						</p>
 					)}
 				</div>

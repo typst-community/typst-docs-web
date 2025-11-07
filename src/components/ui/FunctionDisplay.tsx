@@ -5,7 +5,7 @@ import { normalizeDetailBlocks } from "../../utils/normalizeModel.js";
 import { ChevronRightIcon } from "../icons";
 import { FunctionDefinition } from "./FunctionDefinition";
 import { FunctionParameters } from "./FunctionParameters";
-import { HtmlContent } from "./HtmlContent";
+import { HtmlBlock } from "./HtmlBlock";
 
 type FunctionDisplayProps = {
 	func: Func;
@@ -28,11 +28,11 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 			{normalizeDetailBlocks(func).map((block) => {
 				switch (block.kind) {
 					case "html":
-						return <HtmlContent html={block.content} />;
+						return <HtmlBlock html={block.content} />;
 					case "example":
 						return isExampleFolding ? (
 							<details class="folding-example group">
-								<summary class="flex items-center gap-1 text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-800 marker:hidden">
+								<summary class="flex items-center gap-1 text-sm font-medium cursor-pointer text-gray-600 hover:text-gray-800 transition-colors marker:hidden">
 									<div class="w-4 h-4 text-gray-400 transform transition-transform duration-200 group-open:rotate-90">
 										<ChevronRightIcon />
 									</div>
@@ -41,27 +41,19 @@ export const FunctionDisplay: FC<FunctionDisplayProps> = ({
 										title={block.content.title}
 									/>
 								</summary>
-								<div class="mt-2 bg-white p-3 rounded-md border border-gray-200 text-sm">
-									<HtmlContent html={block.content.body} />
+								<div>
+									<HtmlBlock html={block.content.body} />
 								</div>
 							</details>
 						) : (
-							<div class="bg-gray-50 p-4 rounded-md border border-gray-200">
-								<HtmlContent html={block.content.body} />
-							</div>
+							<HtmlBlock html={block.content.body} />
 						);
 					default:
 						return null;
 				}
 			})}
-
-			<div class="my-4">
-				<FunctionDefinition func={func} prefix={prefix} />
-			</div>
-
-			<div class="my-4">
-				<FunctionParameters params={func.params} prefix={prefix} />
-			</div>
+			<FunctionDefinition func={func} prefix={prefix} />
+			<FunctionParameters params={func.params} prefix={prefix} />
 		</>
 	);
 };

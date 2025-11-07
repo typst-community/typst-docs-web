@@ -34,7 +34,7 @@ export const Translation: TranslationComponent = (props) => {
 		case "search":
 			return <Fragment>Search</Fragment>;
 		case "defaultValue":
-			return <Fragment>Default value:</Fragment>;
+			return <Fragment>Default value: </Fragment>;
 		case "stringValues":
 			return <Fragment>Available string values</Fragment>;
 		case "deprecationWarning":
