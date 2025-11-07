@@ -83,7 +83,8 @@ Please ensure both this site and typst-docs are configured with the same base pa
 	 * The route provides the raw JSON data of the page for development or LLM purposes.
 	 */
 	app.get(`${route}index.json`, (c) => {
-		return c.json(page);
+		const { children: _, ...pageWithoutChildren } = page;
+		return c.json(pageWithoutChildren);
 	});
 });
 
