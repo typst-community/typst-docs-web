@@ -84,6 +84,11 @@ export const BaseTemplate: FC<BaseTemplateProps> = ({
 				<meta name="twitter:site" content="@typstapp" />
 				<meta name="twitter:card" content="summary_large_image" />
 				<link rel="canonical" href={absoluteRouteUrl} />
+				<link
+					rel="alternate"
+					type="application/json"
+					href={joinPath(route, "index.json")}
+				/>
 				<meta name="robots" content="index, follow" />
 				<meta
 					name="twitter:image:alt"
