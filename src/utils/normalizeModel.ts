@@ -5,8 +5,10 @@
 
 import type {
 	DetailsBlock,
+	Param,
 	WithDeprecation,
 	WithDetailsBlocks,
+	WithGlobalAttributes,
 } from "../types/model";
 
 /**
@@ -21,12 +23,12 @@ export function normalizeDeprecation(item: WithDeprecation): {
 		return item.deprecation ? { message: item.deprecation, until: null } : null;
 	}
 
-	if (item.deprecation_message) {
-		return { message: item.deprecation_message, until: item.deprecation_until };
+	if (item.deprecationMessage) {
+		return { message: item.deprecationMessage, until: item.deprecationUntil };
 	}
-	if (item.deprecation_until) {
+	if (item.deprecationUntil) {
 		// This will never reach for Typst v0.14.0-rc.1 documentation.
-		return { message: item.deprecation_until, until: null };
+		return { message: item.deprecationUntil, until: null };
 	}
 	return null;
 }
@@ -55,4 +57,8 @@ export function normalizeDetailBlocks(item: WithDetailsBlocks): DetailsBlock[] {
 	}
 
 	return item.details;
+}
+
+export function normalizeGlobalAttributes(item: WithGlobalAttributes): Param[] {
+	return item.globalAttributes ?? item.global_attributes ?? [];
 }

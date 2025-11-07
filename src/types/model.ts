@@ -122,10 +122,16 @@ export type GroupBody = {
 		title: string;
 		details: Html;
 		functions: Func[];
-		/** Added in Typst v0.14.0-rc.1 (typst/typst#7083) */
-		global_attributes?: Param[];
-	};
+	} & WithGlobalAttributes;
 };
+
+export type WithGlobalAttributes =
+	// Corrected on 2025-11-05 after Typst v0.14.0 (typst/typst#7298)
+	| { globalAttributes?: Param[]; global_attributes?: never }
+	// Format from Typst v0.14.0-rc.1 to v0.14.0 (typst/typst#7083)
+	| { global_attributes: Param[]; globalAttributes?: never }
+	// Format for Typst v0.13.1
+	| { globalAttributes?: never; global_attributes?: never };
 
 export type TypeBody = {
 	kind: "type";
@@ -154,9 +160,9 @@ type Symbol = {
 	name: string;
 	accent: boolean;
 	alternates: string[];
-	markup_shorthand: null | string;
-	math_shorthand: null | string;
-	math_class: null | string;
+	markupShorthand: null | string;
+	mathShorthand: null | string;
+	mathClass: null | string;
 } & WithSymbolValue &
 	WithDeprecation;
 
@@ -175,9 +181,9 @@ export type WithDeprecation =
 	// Format since Typst v0.14.0-rc.1 (typst/typst#6617)
 	| {
 			// TODO: This message contains markdown. Check if this is a bug of the official typst-docs.
-			deprecation_message: string | null;
+			deprecationMessage: string | null;
 			/** A Typst version without leading `v`. */
-			deprecation_until: string | null;
+			deprecationUntil: string | null;
 	  }
 	// Format for Typst v0.13.1
 	| { deprecation: string | null };
