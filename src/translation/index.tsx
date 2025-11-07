@@ -9,6 +9,10 @@ import {
 	Translation as JaJPTranslation,
 	translation as jaJPTranslation,
 } from "./ja-JP";
+import {
+	Translation as ZhHansTranslation,
+	translation as zhHansTranslation,
+} from "./zh-Hans";
 
 /**
  * Translation dictionary for UI attributes and aria labels.
@@ -107,10 +111,12 @@ export type TranslationComponent = FC<TranslationComponentProps>;
 // Switch translation language.
 const { Translation, translation } = (() => {
 	switch (language) {
-		case "ja-JP":
-			return { Translation: JaJPTranslation, translation: jaJPTranslation };
 		case "en-US":
 			return { Translation: EnUSTranslation, translation: enUSTranslation };
+		case "ja-JP":
+			return { Translation: JaJPTranslation, translation: jaJPTranslation };
+		case "zh-Hans":
+			return { Translation: ZhHansTranslation, translation: zhHansTranslation };
 		default:
 			throw new Error(`Unsupported language: ${language}`);
 	}

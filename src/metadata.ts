@@ -4,7 +4,7 @@ import path from "node:path";
 const METADATA_FILE = path.resolve(process.cwd(), "./public/metadata.json");
 
 type Metadata = {
-	language: "ja-JP" | "en-US";
+	language: "ja-JP" | "en-US" | "zh-Hans";
 	version: string;
 	typstOfficialUrl: string;
 	typstOfficialDocsUrl: `http://${string}/` | `https://${string}/`;
