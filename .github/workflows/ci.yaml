@@ -100,8 +100,13 @@ jobs:
             "typstOfficialUrl": "https://typst.app",
             "typstOfficialDocsUrl": "https://typst.app/docs/",
             "githubOrganizationUrl": "https://github.com/typst-community",
-            "githubRepositoryUrl": "https://github.com/typst-community/typst-docs-web",
-            "discordServerUrl": "https://discord.gg/2uDybryKPe",
+            "social": [
+              "https://github.com/typst-community/typst-docs-web",
+              {
+                "title": "Discord (Typst)",
+                "url": "https://discord.gg/2uDybryKPe"
+              }
+            ],
             "originUrl": "https://example.com/",
             "basePath": "${{ matrix.base }}",
             "displayTranslationStatus": false

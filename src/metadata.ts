@@ -1,5 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
+import type { FC } from "hono/jsx";
+import { DiscordIcon, GitHubIcon, HomeIcon, QQIcon } from "./components/icons";
 
 const METADATA_FILE = path.resolve(process.cwd(), "./public/metadata.json");
 
@@ -9,30 +11,99 @@ type Metadata = {
 	typstOfficialUrl: string;
 	typstOfficialDocsUrl: `http://${string}/` | `https://${string}/`;
 	githubOrganizationUrl: string;
-	githubRepositoryUrl: string;
-	discordServerUrl: string;
+	social: Social[];
 	originUrl: string;
 	basePath: "/" | `/${string}/`;
 	displayTranslationStatus: boolean;
 };
+type MetadataInput = Omit<Metadata, "social"> & {
+	social: SocialInput[];
+};
+
+type Social = {
+	url: string;
+	title: string;
+	Icon: FC<{ title?: string }>;
+	kind: "github" | "discord" | "qq" | "homepage";
+};
+type SocialInput = string | { url: string; title?: string };
 
 const metadata: Metadata = (() => {
-	if (fs.existsSync(METADATA_FILE)) {
-		const content = fs.readFileSync(METADATA_FILE, "utf-8");
-		return JSON.parse(content);
-	}
-	// If metadata JSON file does not exist, fallback for test environments
+	const { social, ...meta }: MetadataInput = (() => {
+		if (fs.existsSync(METADATA_FILE)) {
+			const content = fs.readFileSync(METADATA_FILE, "utf-8");
+			const raw: MetadataInput = JSON.parse(content);
+
+			// Be compatible with old versions of typst-docs-web.
+			if (!("social" in raw)) {
+				(raw as MetadataInput).social = [];
+			}
+			if ("githubRepositoryUrl" in raw) {
+				raw.social.push(raw.githubRepositoryUrl as string);
+			}
+			if ("discordServerUrl" in raw) {
+				raw.social.push(raw.discordServerUrl as string);
+			}
+
+			return raw;
+		}
+		// If metadata JSON file does not exist, fallback for test environments
+		return {
+			language: "en-US",
+			version: "0.0.0",
+			typstOfficialUrl: "https://typst.app/",
+			typstOfficialDocsUrl: "https://typst.app/docs/",
+			githubOrganizationUrl: "https://github.com/typst",
+			social: [
+				"https://github.com/typst/typst",
+				{
+					title: "Discord (dummy)",
+					url: "https://discord.gg/dummy",
+				},
+			],
+			originUrl: "https://example.com/",
+			basePath: "/docs/",
+			displayTranslationStatus: true,
+		};
+	})();
 	return {
-		language: "en-US",
-		version: "0.0.0",
-		typstOfficialUrl: "https://typst.app/",
-		typstOfficialDocsUrl: "https://typst.app/docs/",
-		githubOrganizationUrl: "https://github.com/typst",
-		githubRepositoryUrl: "https://github.com/typst/typst",
-		discordServerUrl: "https://discord.gg/dummy",
-		originUrl: "https://example.com/",
-		basePath: "/docs/",
-		displayTranslationStatus: true,
+		...meta,
+		// Normalize social links
+		social: social
+			.map((s) => (typeof s === "string" ? { url: s } : s))
+			.map(({ url, title }) => {
+				if (url.startsWith("https://github.com/")) {
+					return {
+						kind: "github",
+						url,
+						title:
+							title ?? `GitHub (${url.slice("https://github.com/".length)})`,
+						Icon: GitHubIcon,
+					};
+				}
+				if (url.startsWith("https://discord.gg/")) {
+					return {
+						kind: "discord",
+						url,
+						title: title ?? "Discord",
+						Icon: DiscordIcon,
+					};
+				}
+				if (url.startsWith("https://qm.qq.com/")) {
+					return {
+						kind: "qq",
+						url,
+						title: title ?? "QQ",
+						Icon: QQIcon,
+					};
+				}
+				return {
+					kind: "homepage",
+					url,
+					title: title ?? "Homepage",
+					Icon: HomeIcon,
+				};
+			}),
 	} satisfies Metadata;
 })();
 
@@ -46,10 +117,8 @@ export const typstOfficialUrl = metadata.typstOfficialUrl;
 export const typstOfficialDocsUrl = metadata.typstOfficialDocsUrl;
 /** The GitHub organization URL. */
 export const githubOrganizationUrl = metadata.githubOrganizationUrl;
-/** The GitHub repository URL. */
-export const githubRepositoryUrl = metadata.githubRepositoryUrl;
-/** The Discord server invite URL. */
-export const discordServerUrl = metadata.discordServerUrl;
+/** Social links. */
+export const social = metadata.social;
 /** The origin URL of the deployed site, used for metadata. Note that the base path should not be included. */
 export const originUrl = metadata.originUrl;
 /** The base public path for deployment. This must match the value used in typst-docs. */
