@@ -1,20 +1,13 @@
 import {
-	discordServerUrl,
 	displayTranslationStatus,
-	githubRepositoryUrl,
+	social,
 	typstOfficialDocsUrl,
 	typstOfficialUrl,
 	version,
 } from "../../../metadata";
 import { Translation, translation } from "../../../translation/";
 import { calculateTranslationProgressRate } from "../../../utils/translationStatus";
-import {
-	DiscordIcon,
-	GitHubIcon,
-	LanguageIcon,
-	MenuIcon,
-	SearchIcon,
-} from "../../icons";
+import { LanguageIcon, MenuIcon, SearchIcon } from "../../icons";
 import { SiteTitle } from "./SiteTitle";
 
 const VersionBadge = () => (
@@ -80,26 +73,20 @@ export const Header = () => {
 					<div class="flex items-center gap-4 flex-shrink-0">
 						<nav>
 							<ul class="flex items-center gap-4">
-								<li class="social">
-									<a
-										href={discordServerUrl}
-										class="text-gray-600 hover:text-gray-800 transition-colors"
-									>
-										<div class="w-4 h-4">
-											<DiscordIcon />
-										</div>
-									</a>
-								</li>
-								<li class="social">
-									<a
-										href={githubRepositoryUrl}
-										class="text-gray-600 hover:text-gray-800 transition-colors"
-									>
-										<div class="w-4 h-4 text-gray-600 hover:text-gray-800 transition-colors">
-											<GitHubIcon />
-										</div>
-									</a>
-								</li>
+								{social.map(({ url, title, Icon }) => (
+									<li class="social">
+										<a
+											href={url}
+											title={title}
+											class="text-gray-600 hover:text-gray-800 transition-colors"
+										>
+											<span class="sr-only">{title}</span>
+											<div class="w-4 h-4">
+												<Icon title={title} />
+											</div>
+										</a>
+									</li>
+								))}
 								<li class="secondary">
 									<a
 										href={typstOfficialUrl}

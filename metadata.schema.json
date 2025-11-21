@@ -26,15 +26,40 @@
 			"format": "uri",
 			"description": "The GitHub organization URL."
 		},
+		"social": {
+			"type": "array",
+			"description": "Social links to show in the header and footer. The order of items will be the display order.",
+			"items": {
+				"anyOf": [
+					{
+						"$ref": "#/$defs/socialUrl"
+					},
+					{
+						"type": "object",
+						"properties": {
+							"url": {
+								"$ref": "#/$defs/socialUrl"
+							},
+							"title": {
+								"type": "string",
+								"description": "A brief title of the social link. If not given, a default title will be generated.",
+								"examples": ["Discord (Kumihan Club)"]
+							}
+						},
+						"required": ["url"]
+					}
+				]
+			}
+		},
 		"githubRepositoryUrl": {
 			"type": "string",
 			"format": "uri",
-			"description": "The GitHub repository URL."
+			"description": "The GitHub repository URL. Deprecated, please use `social` instead."
 		},
 		"discordServerUrl": {
 			"type": "string",
 			"format": "uri",
-			"description": "The Discord server invite URL."
+			"description": "The Discord server invite URL. Deprecated, please use `social` instead."
 		},
 		"originUrl": {
 			"type": "string",
@@ -57,10 +82,22 @@
 		"typstOfficialUrl",
 		"typstOfficialDocsUrl",
 		"githubOrganizationUrl",
-		"githubRepositoryUrl",
-		"discordServerUrl",
+		"social",
 		"originUrl",
 		"basePath",
 		"displayTranslationStatus"
-	]
+	],
+	"$defs": {
+		"socialUrl": {
+			"type": "string",
+			"format": "uri",
+			"description": "The social link. For example, a GitHub repository URL, a Discord server invite URL, or a homepage.",
+			"examples": [
+				"https://github.com/typst/typst",
+				"https://discord.gg/2uDybryKPe",
+				"https://typst-jp.github.io",
+				"https://qm.qq.com/q/Random1234"
+			]
+		}
+	}
 }
