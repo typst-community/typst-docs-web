@@ -19,3 +19,4 @@ export { WorldIcon } from "./WorldIcon";
 
 export { DiscordIcon } from "./DiscordIcon";
 export { GitHubIcon } from "./GitHubIcon";
+export { QQIcon } from "./QQIcon";
