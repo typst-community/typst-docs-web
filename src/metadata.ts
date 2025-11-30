@@ -11,38 +11,38 @@ type Metadata = {
 	typstOfficialUrl: string;
 	typstOfficialDocsUrl: `http://${string}/` | `https://${string}/`;
 	githubOrganizationUrl: string;
-	social: Social[];
+	socialLinks: SocialLink[];
 	originUrl: string;
 	basePath: "/" | `/${string}/`;
 	displayTranslationStatus: boolean;
 };
-type MetadataInput = Omit<Metadata, "social"> & {
-	social: SocialInput[];
+type MetadataInput = Omit<Metadata, "socialLinks"> & {
+	socialLinks: SocialLinkInput[];
 };
 
-type Social = {
+type SocialLink = {
 	url: string;
 	title: string;
 	Icon: FC<{ title?: string }>;
 	kind: "github" | "discord" | "qq" | "homepage";
 };
-type SocialInput = string | { url: string; title?: string };
+type SocialLinkInput = string | { url: string; title?: string };
 
 const metadata: Metadata = (() => {
-	const { social, ...meta }: MetadataInput = (() => {
+	const { socialLinks, ...meta }: MetadataInput = (() => {
 		if (fs.existsSync(METADATA_FILE)) {
 			const content = fs.readFileSync(METADATA_FILE, "utf-8");
 			const raw: MetadataInput = JSON.parse(content);
 
 			// Be compatible with old versions of typst-docs-web.
-			if (!("social" in raw)) {
-				(raw as MetadataInput).social = [];
+			if (!("socialLinks" in raw)) {
+				(raw as MetadataInput).socialLinks = [];
 			}
 			if ("githubRepositoryUrl" in raw) {
-				raw.social.push(raw.githubRepositoryUrl as string);
+				raw.socialLinks.push(raw.githubRepositoryUrl as string);
 			}
 			if ("discordServerUrl" in raw) {
-				raw.social.push(raw.discordServerUrl as string);
+				raw.socialLinks.push(raw.discordServerUrl as string);
 			}
 
 			return raw;
@@ -54,7 +54,7 @@ const metadata: Metadata = (() => {
 			typstOfficialUrl: "https://typst.app/",
 			typstOfficialDocsUrl: "https://typst.app/docs/",
 			githubOrganizationUrl: "https://github.com/typst",
-			social: [
+			socialLinks: [
 				"https://github.com/typst/typst",
 				{
 					title: "Discord (dummy)",
@@ -69,7 +69,7 @@ const metadata: Metadata = (() => {
 	return {
 		...meta,
 		// Normalize social links
-		social: social
+		socialLinks: socialLinks
 			.map((s) => (typeof s === "string" ? { url: s } : s))
 			.map(({ url, title }) => {
 				if (url.startsWith("https://github.com/")) {
@@ -118,7 +118,7 @@ export const typstOfficialDocsUrl = metadata.typstOfficialDocsUrl;
 /** The GitHub organization URL. */
 export const githubOrganizationUrl = metadata.githubOrganizationUrl;
 /** Social links. */
-export const social = metadata.social;
+export const socialLinks = metadata.socialLinks;
 /** The origin URL of the deployed site, used for metadata. Note that the base path should not be included. */
 export const originUrl = metadata.originUrl;
 /** The base public path for deployment. This must match the value used in typst-docs. */

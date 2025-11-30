@@ -1,6 +1,6 @@
 import {
 	displayTranslationStatus,
-	social,
+	socialLinks,
 	typstOfficialDocsUrl,
 	typstOfficialUrl,
 	version,
@@ -73,7 +73,7 @@ export const Header = () => {
 					<div class="flex items-center gap-4 flex-shrink-0">
 						<nav>
 							<ul class="flex items-center gap-4">
-								{social.map(({ url, title, Icon }) => (
+								{socialLinks.map(({ url, title, Icon }) => (
 									<li class="social">
 										<a
 											href={url}

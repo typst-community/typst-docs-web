@@ -26,7 +26,7 @@
 			"format": "uri",
 			"description": "The GitHub organization URL."
 		},
-		"social": {
+		"socialLinks": {
 			"type": "array",
 			"description": "Social links to show in the header and footer. The order of items will be the display order.",
 			"items": {
@@ -54,12 +54,14 @@
 		"githubRepositoryUrl": {
 			"type": "string",
 			"format": "uri",
-			"description": "The GitHub repository URL. Deprecated, please use `social` instead."
+			"deprecated": true,
+			"description": "The GitHub repository URL. Deprecated, please use `socialLinks` instead."
 		},
 		"discordServerUrl": {
 			"type": "string",
 			"format": "uri",
-			"description": "The Discord server invite URL. Deprecated, please use `social` instead."
+			"deprecated": true,
+			"description": "The Discord server invite URL. Deprecated, please use `socialLinks` instead."
 		},
 		"originUrl": {
 			"type": "string",
