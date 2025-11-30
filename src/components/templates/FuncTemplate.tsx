@@ -119,9 +119,11 @@ function ScopedDefinitions({
 
 			{scope.map((method, _index) => {
 				const methodId = `${parentId}definitions-${method.name}`;
-
 				return (
-					<div key={method.name}>
+					<div
+						key={method.name}
+						class="border-b border-neutral-200 last:border-0"
+					>
 						<h3 id={methodId} class="flex">
 							<div class="flex items-center gap-2">
 								<code
