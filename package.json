@@ -10,6 +10,8 @@
 		"check:write": "biome check --write .",
 		"type-check": "tsc --noEmit --skipLibCheck",
 		"test": "vitest",
+		"test:e2e": "playwright test",
+		"test:e2e:update": "playwright test --update-snapshots",
 		"fetch-docs-ja-jp": "for f in docs metadata translation-status; do wget --output-document public/$f.json https://typst-jp.github.io/docs/$f.json; done"
 	},
 	"devDependencies": {
@@ -17,9 +19,11 @@
 		"@hono/ssg-plugins-essential": "^0.1.0",
 		"@hono/vite-dev-server": "^0.20.1",
 		"@hono/vite-ssg": "^0.2.0",
+		"@playwright/test": "^1.57.0",
 		"@tailwindcss/typography": "^0.5.16",
 		"@tailwindcss/vite": "^4.1.5",
 		"@types/bun": "latest",
+		"@types/node": "24.10.1",
 		"hono": "^4.9.0",
 		"pagefind": "^1.3.0",
 		"tailwind-merge": "^3.3.0",
