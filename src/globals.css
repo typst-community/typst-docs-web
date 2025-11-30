@@ -110,77 +110,107 @@ samp {
 }
 
 /*
+Typst-style markup heading decorations
+
+Top-level heading indicates a top-level section of the document rather than its title.
+*/
+.prose h2::before,
+.prose h3::before,
+.prose h4::before,
+.prose h5::before,
+.prose h6::before {
+	@apply text-gray-400;
+	margin-right: 1ch;
+}
+
+.prose h2::before {
+	content: "=";
+}
+.prose h3::before {
+	content: "==";
+}
+.prose h4::before {
+	content: "===";
+}
+.prose h5::before {
+	content: "====";
+}
+.prose h6::before {
+	content: "=====";
+}
+
+/*
 Code block styles for Typst Light theme
 
 cf.
 - crates/typst-syntax/src/highlight.rs
 - crates/typst-library/src/text/raw.rs
 */
-pre code span.typ-comment {
+code span.typ-comment {
 	color: #8a8a8a;
 }
-pre code span.typ-escape {
+code span.typ-escape {
 	color: #1d6c76;
 }
-pre code span.typ-strong {
+code span.typ-strong {
 	font-weight: bold;
 }
-pre code span.typ-emph {
+code span.typ-emph {
 	font-style: italic;
 }
-pre code span.typ-link {
+code span.typ-link {
 	text-decoration: underline;
 	color: #1d6c76;
 }
-pre code span.typ-raw {
+code span.typ-raw {
 	color: #818181;
 }
-pre code span.typ-label {
+code span.typ-label {
 	color: #1d6c76;
 }
-pre code span.typ-ref {
+code span.typ-ref {
 	color: #1d6c76;
 }
-pre code span.typ-heading {
+code span.typ-heading {
 	color: #4b69c6;
 	font-weight: bold;
 	text-decoration: underline;
 }
-pre code span.typ-marker {
+code span.typ-marker {
 	color: #8b41b1;
 }
-pre code span.typ-term {
+code span.typ-term {
 	color: #8b41b1;
 	font-weight: bold;
 }
-pre code span.typ-math-delim {
+code span.typ-math-delim {
 	color: #298e0d;
 }
-pre code span.typ-math-op {
+code span.typ-math-op {
 	color: #1d6c76;
 }
-pre code span.typ-key {
+code span.typ-key {
 	color: #d73a49;
 }
-pre code span.typ-num {
+code span.typ-num {
 	color: #b60157;
 }
-pre code span.typ-str {
+code span.typ-str {
 	color: #298e0d;
 }
-pre code span.typ-func {
+code span.typ-func {
 	color: #4b69c6;
 }
-pre code span.typ-pol {
+code span.typ-pol {
 	color: #8b41b1;
 }
-pre code span.typ-punct {
+code span.typ-punct {
 	color: #6b7280;
 }
-pre code span.typ-op {
+code span.typ-op {
 	color: #d73a49;
 }
-pre code span.typ-error {
+code span.typ-error {
 	background: #d73a49;
 	color: #ffffff;
 	padding: 0 0.12rem;

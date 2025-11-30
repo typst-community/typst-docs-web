@@ -12,7 +12,7 @@ import {
 	Tooltip,
 } from "../ui";
 import { DeprecationWarning } from "../ui/DeprecationWarning";
-import { HtmlContent } from "../ui/HtmlContent";
+import { HtmlBlock } from "../ui/HtmlBlock";
 import BaseTemplate, { type BaseTemplateProps } from "./BaseTemplate";
 
 export type FuncTemplateProps = Omit<BaseTemplateProps, "page"> & {
@@ -52,16 +52,16 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 				switch (block.kind) {
 					case "html":
 						return (
-							<div class="my-4 text-gray-700">
-								<HtmlContent html={block.content} />
+							<div class="text-gray-700">
+								<HtmlBlock html={block.content} />
 							</div>
 						);
 					case "example":
 						// This will never reach for Typst v0.13.1 and v0.14.0-rc.1 documentations.
 						return (
-							<div class="my-6 bg-gray-50 p-4 rounded-md border border-gray-200">
+							<div>
 								{block.content.title}
-								<HtmlContent html={block.content.body} />
+								<HtmlBlock html={block.content.body} />
 							</div>
 						);
 					default:
@@ -69,19 +69,14 @@ export const FuncTemplate: FC<FuncTemplateProps> = ({
 				}
 			})}
 
-			<h2 id="parameters" class="flex items-baseline gap-1">
-				<Translation translationKey="parameters" />
-				<Tooltip kind="parameters" />
+			<h2 id="parameters" class="flex">
+				<div class="flex items-baseline gap-1">
+					<Translation translationKey="parameters" />
+					<Tooltip kind="parameters" />
+				</div>
 			</h2>
-
-			<div class="mb-6">
-				<FunctionDefinition func={content} />
-			</div>
-
-			<div class="my-6">
-				<FunctionParameters params={content.params} />
-			</div>
-
+			<FunctionDefinition func={content} />
+			<FunctionParameters params={content.params} />
 			<ScopedDefinitions scope={content.scope} />
 		</BaseTemplate>
 	);
@@ -109,48 +104,49 @@ function ScopedDefinitions({
 	// the following heading levels will _not_ increase with the scope level.
 	return (
 		<div class="mt-8">
-			<h2 id={`${parentId}definitions`} class="flex items-baseline gap-1">
-				{parent ? (
-					// Currently, the scope has at most two levels.
-					// Therefore, it is sufficient to only annotate the direct `parent`.
-					<Translation translationKey="definitionsOf" name={parent.name} />
-				) : (
-					<Translation translationKey="definitions" />
-				)}
-				<Tooltip kind="definitions" />
+			<h2 id={`${parentId}definitions`} class="flex">
+				<div class="flex items-baseline gap-1">
+					{parent ? (
+						// Currently, the scope has at most two levels.
+						// Therefore, it is sufficient to only annotate the direct `parent`.
+						<Translation translationKey="definitionsOf" name={parent.name} />
+					) : (
+						<Translation translationKey="definitions" />
+					)}
+					<Tooltip kind="definitions" />
+				</div>
 			</h2>
 
 			{scope.map((method, _index) => {
 				const methodId = `${parentId}definitions-${method.name}`;
-
 				return (
 					<div
 						key={method.name}
-						class="mb-8 pb-6 border-b border-gray-100 last:border-0"
+						class="border-b border-neutral-200 last:border-0"
 					>
-						<h3 id={methodId} class="method-head mb-3 flex items-center gap-2">
-							<code
-								class="text-base font-medium"
-								style={
-									normalizeDeprecation(method) !== null
-										? { textDecoration: "line-through" }
-										: undefined
-								}
-							>
-								{method.name}
-							</code>
+						<h3 id={methodId} class="flex">
+							<div class="flex items-center gap-2">
+								<code
+									class="text-base font-medium"
+									style={
+										normalizeDeprecation(method) !== null
+											? { textDecoration: "line-through" }
+											: undefined
+									}
+								>
+									{method.name}
+								</code>
 
-							<small class="flex items-center">
-								{method.element && <Tooltip kind="element" />}
-								{method.contextual && <Tooltip kind="contextual" />}
-							</small>
+								<small class="flex items-center">
+									{method.element && <Tooltip kind="element" />}
+									{method.contextual && <Tooltip kind="contextual" />}
+								</small>
+							</div>
 						</h3>
 
 						{<DeprecationWarning item={method} level="scoped" />}
 
-						<div class="pl-2">
-							<FunctionDisplay func={method} prefix={methodId} />
-						</div>
+						<FunctionDisplay func={method} prefix={methodId} />
 
 						<ScopedDefinitions
 							scope={method.scope}

@@ -1,7 +1,7 @@
 import type { FC } from "hono/jsx";
 import { Translation } from "../../translation/";
 import type { CategoryBody, Page } from "../../types/model";
-import { HtmlContent } from "../ui/HtmlContent";
+import { HtmlBlock } from "../ui/HtmlBlock";
 import BaseTemplate, { type BaseTemplateProps } from "./BaseTemplate";
 
 export type CategoryTemplateProps = Omit<BaseTemplateProps, "page"> & {
@@ -26,21 +26,23 @@ export const CategoryTemplate: FC<CategoryTemplateProps> = ({
 			nextPage={nextPage}
 		>
 			<h1 id="summary">{page.body.content.title}</h1>
-			<HtmlContent html={page.body.content.details} />
+			<HtmlBlock html={page.body.content.details} />
 			{page.body.content.items.length > 0 && (
 				<>
 					<h2 id="definitions">
 						<Translation translationKey="definitions" />
 					</h2>
-					<ul class="subgridded">
+					<ul>
 						{page.body.content.items.map((item) => (
 							<li key={item.route}>
-								<div>
-									<a href={item.route}>
-										{item.code ? <code>{item.name}</code> : item.name}
-									</a>
+								<div class="flex">
+									<div class="min-w-[8rem]">
+										<a href={item.route}>
+											{item.code ? <code>{item.name}</code> : item.name}
+										</a>
+									</div>
+									<div>{item.oneliner}</div>
 								</div>
-								<div class="pl-4">{item.oneliner}</div>
 							</li>
 						))}
 					</ul>
