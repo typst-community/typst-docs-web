@@ -1,6 +1,5 @@
 import {
 	displayTranslationStatus,
-	socialLinks,
 	typstOfficialDocsUrl,
 	typstOfficialUrl,
 	version,
@@ -9,6 +8,7 @@ import { Translation, translation } from "../../../translation/";
 import { calculateTranslationProgressRate } from "../../../utils/translationStatus";
 import { LanguageIcon, MenuIcon, SearchIcon } from "../../icons";
 import { SiteTitle } from "./SiteTitle";
+import { SocialLinkIcons } from "./SocialLinkIcons";
 
 const VersionBadge = () => (
 	<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-600">
@@ -71,22 +71,9 @@ export const Header = () => {
 					</div>
 
 					<div class="flex items-center gap-4 flex-shrink-0">
-						<nav>
-							<ul class="flex items-center gap-4">
-								{socialLinks.map(({ url, title, Icon }) => (
-									<li class="social">
-										<a
-											href={url}
-											title={title}
-											class="text-gray-600 hover:text-gray-800 transition-colors"
-										>
-											<span class="sr-only">{title}</span>
-											<div class="w-4 h-4">
-												<Icon title={title} />
-											</div>
-										</a>
-									</li>
-								))}
+						<nav class="flex items-center gap-4">
+							<SocialLinkIcons size="sm" />
+							<ul class="flex items-center gap-3">
 								<li class="secondary">
 									<a
 										href={typstOfficialUrl}

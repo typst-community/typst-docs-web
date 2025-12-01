@@ -101,7 +101,7 @@ jobs:
             "typstOfficialDocsUrl": "https://typst.app/docs/",
             "githubOrganizationUrl": "https://github.com/typst-community",
             "socialLinks": [
-              "https://github.com/typst-community/typst-docs-web",
+              { "url": "https://github.com/typst-community/typst-docs-web" },
               {
                 "title": "Discord (Typst)",
                 "url": "https://discord.gg/2uDybryKPe"

@@ -8,8 +8,12 @@ import {
 } from "../metadata";
 import type { TranslationComponent, TranslationObject } from "./";
 
-const githubRepositoryUrl = socialLinks.find((s) => s.kind === "github")?.url;
-const discordServerUrl = socialLinks.find((s) => s.kind === "discord")?.url;
+const githubRepositoryUrl = socialLinks.find(({ url }) =>
+	url.startsWith("https://github.com/"),
+)?.url;
+const discordServerUrl = socialLinks.find(({ url }) =>
+	url.startsWith("https://discord.gg/"),
+)?.url;
 if (githubRepositoryUrl === undefined || discordServerUrl === undefined) {
 	throw new Error(
 		`The ja-JP translation requires to provide both GitHub and Discord social links in metadata.json, but at present: GitHub = ${githubRepositoryUrl}, Discord = ${discordServerUrl}.`,

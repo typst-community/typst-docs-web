@@ -49,8 +49,8 @@ Create `/public/metadata.json` and describe the metadata for the documentation w
   "typstOfficialUrl": "https://typst.app",
   "typstOfficialDocsUrl": "https://typst.app/docs/",
   "githubOrganizationUrl": "https://github.com/typst-jp",
-  "social": [
-    "https://github.com/typst-jp/docs",
+  "socialLinks": [
+    { "url": "https://github.com/typst-jp/docs" },
     {
       "title": "Discord (Kumihan Club)",
       "url": "https://discord.gg/9xF7k4aAuH"

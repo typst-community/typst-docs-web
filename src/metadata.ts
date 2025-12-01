@@ -1,7 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { FC } from "hono/jsx";
-import { DiscordIcon, GitHubIcon, HomeIcon, QQIcon } from "./components/icons";
 
 const METADATA_FILE = path.resolve(process.cwd(), "./public/metadata.json");
 
@@ -11,99 +9,53 @@ type Metadata = {
 	typstOfficialUrl: string;
 	typstOfficialDocsUrl: `http://${string}/` | `https://${string}/`;
 	githubOrganizationUrl: string;
-	socialLinks: SocialLink[];
+	/** @deprecated Use `socialLinks` instead. */
+	githubRepositoryUrl?: string;
+	/** @deprecated Use `socialLinks` instead. */
+	discordServerUrl?: string;
+	socialLinks: { url: string; title?: string }[];
 	originUrl: string;
 	basePath: "/" | `/${string}/`;
 	displayTranslationStatus: boolean;
 };
-type MetadataInput = Omit<Metadata, "socialLinks"> & {
-	socialLinks: SocialLinkInput[];
-};
-
-type SocialLink = {
-	url: string;
-	title: string;
-	Icon: FC<{ title?: string }>;
-	kind: "github" | "discord" | "qq" | "homepage";
-};
-type SocialLinkInput = string | { url: string; title?: string };
 
 const metadata: Metadata = (() => {
-	const { socialLinks, ...meta }: MetadataInput = (() => {
-		if (fs.existsSync(METADATA_FILE)) {
-			const content = fs.readFileSync(METADATA_FILE, "utf-8");
-			const raw: MetadataInput = JSON.parse(content);
+	if (fs.existsSync(METADATA_FILE)) {
+		const jsonBody = fs.readFileSync(METADATA_FILE, "utf-8");
+		const parsedMetadata: Metadata = JSON.parse(jsonBody);
 
-			// Be compatible with old versions of typst-docs-web.
-			if (!("socialLinks" in raw)) {
-				(raw as MetadataInput).socialLinks = [];
-			}
-			if ("githubRepositoryUrl" in raw) {
-				raw.socialLinks.push(raw.githubRepositoryUrl as string);
-			}
-			if ("discordServerUrl" in raw) {
-				raw.socialLinks.push(raw.discordServerUrl as string);
-			}
-
-			return raw;
+		// TODO: Remove deprecated fields in future major update.
+		if ("githubRepositoryUrl" in parsedMetadata) {
+			throw new Error(
+				"`githubRepositoryUrl` is deprecated. Please use `socialLinks` instead.",
+			);
 		}
-		// If metadata JSON file does not exist, fallback for test environments
-		return {
-			language: "en-US",
-			version: "0.0.0",
-			typstOfficialUrl: "https://typst.app/",
-			typstOfficialDocsUrl: "https://typst.app/docs/",
-			githubOrganizationUrl: "https://github.com/typst",
-			socialLinks: [
-				"https://github.com/typst/typst",
-				{
-					title: "Discord (dummy)",
-					url: "https://discord.gg/dummy",
-				},
-			],
-			originUrl: "https://example.com/",
-			basePath: "/docs/",
-			displayTranslationStatus: true,
-		};
-	})();
+		if ("discordServerUrl" in parsedMetadata) {
+			throw new Error(
+				"`discordServerUrl` is deprecated. Please use `socialLinks` instead.",
+			);
+		}
+
+		return parsedMetadata;
+	}
+
+	// If metadata JSON file does not exist, fallback for test environments
 	return {
-		...meta,
-		// Normalize social links
-		socialLinks: socialLinks
-			.map((s) => (typeof s === "string" ? { url: s } : s))
-			.map(({ url, title }) => {
-				if (url.startsWith("https://github.com/")) {
-					return {
-						kind: "github",
-						url,
-						title:
-							title ?? `GitHub (${url.slice("https://github.com/".length)})`,
-						Icon: GitHubIcon,
-					};
-				}
-				if (url.startsWith("https://discord.gg/")) {
-					return {
-						kind: "discord",
-						url,
-						title: title ?? "Discord",
-						Icon: DiscordIcon,
-					};
-				}
-				if (url.startsWith("https://qm.qq.com/")) {
-					return {
-						kind: "qq",
-						url,
-						title: title ?? "QQ",
-						Icon: QQIcon,
-					};
-				}
-				return {
-					kind: "homepage",
-					url,
-					title: title ?? "Homepage",
-					Icon: HomeIcon,
-				};
-			}),
+		language: "en-US",
+		version: "0.0.0",
+		typstOfficialUrl: "https://typst.app/",
+		typstOfficialDocsUrl: "https://typst.app/docs/",
+		githubOrganizationUrl: "https://github.com/typst",
+		socialLinks: [
+			{ url: "https://github.com/typst/typst" },
+			{
+				title: "Discord (dummy)",
+				url: "https://discord.gg/dummy",
+			},
+		],
+		originUrl: "https://example.com/",
+		basePath: "/docs/",
+		displayTranslationStatus: true,
 	} satisfies Metadata;
 })();
 
@@ -117,7 +69,7 @@ export const typstOfficialUrl = metadata.typstOfficialUrl;
 export const typstOfficialDocsUrl = metadata.typstOfficialDocsUrl;
 /** The GitHub organization URL. */
 export const githubOrganizationUrl = metadata.githubOrganizationUrl;
-/** Social links. */
+/** The social links to be displayed in the site header and footer. */
 export const socialLinks = metadata.socialLinks;
 /** The origin URL of the deployed site, used for metadata. Note that the base path should not be included. */
 export const originUrl = metadata.originUrl;
