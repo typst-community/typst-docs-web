@@ -73,7 +73,6 @@ jobs:
         run: |
           set -euxo pipefail
           bash scripts/fetch-docs-assets.sh --tag "${{ matrix.tag }}" --base "${{ matrix.base }}" --dest public
-
       - name: Run Vite build
         run: bun run build
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -82,3 +81,36 @@ jobs:
         with:
           name: dist-${{ matrix.kind }}-${{ matrix.tag }}
           path: dist
+
+  e2e:
+    runs-on: ubuntu-24.04
+    needs: build
+    strategy:
+      matrix:
+        include:
+          - kind: official
+            tag: v0.14.0
+            base: "/docs/"
+    name: Run Playwright E2E tests for ${{ matrix.tag }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Setup tools managed by mise
+        uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Fetch docs assets
+        shell: bash
+        run: |
+          set -euxo pipefail
+          bash scripts/fetch-docs-assets.sh --tag "${{ matrix.tag }}" --base "${{ matrix.base }}" --dest public
+      - name: Install Playwright browsers
+        run: bun playwright install --with-deps
+      - name: Run Playwright E2E tests
+        run: bun run test:e2e
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
