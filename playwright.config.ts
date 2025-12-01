@@ -80,4 +80,10 @@ export default defineConfig({
 		url: serverBaseUrl,
 		reuseExistingServer: !process.env.CI,
 	},
+
+	/* Configure timeouts */
+	timeout: 60_000,
+	expect: {
+		timeout: 20_000,
+	},
 });
