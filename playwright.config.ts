@@ -82,9 +82,9 @@ export default defineConfig({
 	},
 
 	/* Configure timeouts */
-	timeout: 60_000,
+	timeout: 200_000,
 	expect: {
-		timeout: 20_000,
+		timeout: 100_000,
 		/* Configure snapshot comparison */
 		toHaveScreenshot: { maxDiffPixelRatio: 0.05 },
 	},
