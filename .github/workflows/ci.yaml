@@ -7,6 +7,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   ci:
     runs-on: ubuntu-24.04
@@ -64,7 +67,6 @@ jobs:
         uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2.2.3
       - name: Install dependencies
         run: bun install --frozen-lockfile
-
       - name: Fetch docs assets
         if: ${{ matrix.kind == 'ja-JP' }}
         run: bun run fetch-docs-ja-jp
@@ -73,41 +75,7 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
-
-          # Prepare docs.json
-          curl -L https://github.com/typst-community/dev-builds/releases/download/docs-${{ matrix.tag }}/docs.json \
-            -o public/docs.json
-          sd '/DOCS-BASE/' '${{ matrix.base }}' public/docs.json
-
-          # Prepare docs assets
-          curl -LO https://github.com/typst-community/dev-builds/releases/download/docs-${{ matrix.tag }}/docs-assets.zip
-          unzip docs-assets.zip
-          mv assets public/assets
-
-          # Prepare favicon
-          curl -L https://github.com/typst-community/org/raw/main/design/typst-community.icon.png \
-            -o public/favicon.png
-
-          # Configure metadata
-          TAG=${{ matrix.tag }}
-          # Strip the leading ‘v’ or convert to a valid format
-          ${{ startsWith(matrix.tag, 'v') && 'VERSION=${TAG#v}' || 'VERSION="0.dev.${TAG}"' }}
-          cat << EOF > public/metadata.json
-          {
-            "\$schema": "../metadata.schema.json",
-            "language": "en-US",
-            "version": "$VERSION",
-            "typstOfficialUrl": "https://typst.app",
-            "typstOfficialDocsUrl": "https://typst.app/docs/",
-            "githubOrganizationUrl": "https://github.com/typst-community",
-            "githubRepositoryUrl": "https://github.com/typst-community/typst-docs-web",
-            "discordServerUrl": "https://discord.gg/2uDybryKPe",
-            "originUrl": "https://example.com/",
-            "basePath": "${{ matrix.base }}",
-            "displayTranslationStatus": false
-          }
-          EOF
-
+          bash scripts/fetch-docs-assets.sh --tag "${{ matrix.tag }}" --base "${{ matrix.base }}" --dest public
       - name: Run Vite build
         run: bun run build
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -116,3 +84,52 @@ jobs:
         with:
           name: dist-${{ matrix.kind }}-${{ matrix.tag }}
           path: dist
+
+  e2e:
+    runs-on: ubuntu-24.04
+    needs: build
+    strategy:
+      matrix:
+        include:
+          - kind: official
+            tag: v0.14.0
+            base: "/docs/"
+    name: Run Playwright E2E tests for ${{ matrix.tag }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 0
+      - name: Setup tools managed by mise
+        uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Fetch docs assets
+        shell: bash
+        run: |
+          set -euxo pipefail
+          bash scripts/fetch-docs-assets.sh --tag "${{ matrix.tag }}" --base "${{ matrix.base }}" --dest public
+      - name: Install Playwright browsers
+        run: bun playwright install --with-deps
+      - name: Run Playwright E2E tests
+        run: bun run test:e2e:update
+      - name: Commit updated snapshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add tests/e2e/
+          if ! git diff --staged --quiet; then
+            git commit -m "test: update VRT snapshots" || echo "No changes to commit"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          else
+            echo "No snapshot changes detected"
+          fi
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

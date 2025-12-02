@@ -5,3 +5,10 @@ public/docs.json
 public/favicon.png
 public/metadata.json
 public/translation-status.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

@@ -106,11 +106,32 @@ bun run check:write
 bun run type-check
 ```
 
-### Test
+### Unit test
 
 ```sh
 bun run test
 ```
+
+### E2E test
+
+```sh
+# Install Playwright browsers and dependencies
+bun playwright install --with-deps
+
+# Run E2E tests
+bun run test:e2e
+
+# Update E2E test snapshots
+bun run test:e2e:update
+```
+
+To replicate the CI environment locally, use the included helper script:
+
+```bash
+bash scripts/fetch-docs-assets.sh --tag v0.14.0 --base /docs/ --dest public
+```
+
+This will populate `public/docs.json`, `public/assets/`, `public/favicon.png`, and `public/metadata.json`, which the Playwright tests expect.
 
 ## Maintainers
 
