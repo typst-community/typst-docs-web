@@ -7,6 +7,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   ci:
     runs-on: ubuntu-24.04
@@ -95,6 +98,10 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 0
       - name: Setup tools managed by mise
         uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402
       - name: Install dependencies
@@ -107,7 +114,19 @@ jobs:
       - name: Install Playwright browsers
         run: bun playwright install --with-deps
       - name: Run Playwright E2E tests
-        run: bun run test:e2e
+        run: bun run test:e2e:update
+      - name: Commit updated snapshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add tests/e2e/
+          if ! git diff --staged --quiet; then
+            git commit -m "test: update VRT snapshots" || echo "No changes to commit"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          else
+            echo "No snapshot changes detected"
+          fi
       - name: Upload Playwright report
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
