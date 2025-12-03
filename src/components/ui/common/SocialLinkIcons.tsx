@@ -20,7 +20,6 @@ export const SocialLinkIcons: FC<{ size: "sm" | "md" }> = ({ size }) => {
 					}
 					if (url.startsWith("https://discord.gg/")) {
 						return {
-							kind: "discord",
 							url,
 							title: title ?? "Discord",
 							Icon: DiscordIcon,
@@ -28,7 +27,6 @@ export const SocialLinkIcons: FC<{ size: "sm" | "md" }> = ({ size }) => {
 					}
 					if (url.startsWith("https://qm.qq.com/")) {
 						return {
-							kind: "qq",
 							url,
 							title: title ?? "QQ",
 							Icon: QQIcon,
@@ -41,7 +39,7 @@ export const SocialLinkIcons: FC<{ size: "sm" | "md" }> = ({ size }) => {
 					};
 				})
 				.map(({ url, title, Icon }) => (
-					<div>
+					<div key={url}>
 						<a
 							href={url}
 							title={title}
