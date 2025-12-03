@@ -1,13 +1,24 @@
 import { Fragment } from "hono/jsx/jsx-runtime";
 import type { TooltipProps } from "../components/ui/Tooltip";
 import {
-	discordServerUrl,
 	githubOrganizationUrl,
-	githubRepositoryUrl,
+	socialLinks,
 	typstOfficialDocsUrl,
 	version,
 } from "../metadata";
 import type { TranslationComponent, TranslationObject } from "./";
+
+const githubRepositoryUrl = socialLinks.find(({ url }) =>
+	url.startsWith("https://github.com/"),
+)?.url;
+const discordServerUrl = socialLinks.find(({ url }) =>
+	url.startsWith("https://discord.gg/"),
+)?.url;
+if (githubRepositoryUrl === undefined || discordServerUrl === undefined) {
+	throw new Error(
+		`The ja-JP translation requires to provide both GitHub and Discord social links in metadata.json, but at present: GitHub = ${githubRepositoryUrl}, Discord = ${discordServerUrl}.`,
+	);
+}
 
 export const translation: TranslationObject = {
 	htmlLang: () => "ja",

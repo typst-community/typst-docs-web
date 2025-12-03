@@ -49,8 +49,13 @@ Create `/public/metadata.json` and describe the metadata for the documentation w
   "typstOfficialUrl": "https://typst.app",
   "typstOfficialDocsUrl": "https://typst.app/docs/",
   "githubOrganizationUrl": "https://github.com/typst-jp",
-  "githubRepositoryUrl": "https://github.com/typst-jp/docs",
-  "discordServerUrl": "https://discord.gg/9xF7k4aAuH",
+  "socialLinks": [
+    { "url": "https://github.com/typst-jp/docs" },
+    {
+      "title": "Discord (Kumihan Club)",
+      "url": "https://discord.gg/9xF7k4aAuH"
+    }
+  ],
   "originUrl": "https://typst-jp.github.io/",
   "basePath": "/docs/",
   "displayTranslationStatus": true

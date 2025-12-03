@@ -1,21 +1,14 @@
 import {
-	discordServerUrl,
 	displayTranslationStatus,
-	githubRepositoryUrl,
 	typstOfficialDocsUrl,
 	typstOfficialUrl,
 	version,
 } from "../../../metadata";
 import { Translation, translation } from "../../../translation/";
 import { calculateTranslationProgressRate } from "../../../utils/translationStatus";
-import {
-	DiscordIcon,
-	GitHubIcon,
-	LanguageIcon,
-	MenuIcon,
-	SearchIcon,
-} from "../../icons";
+import { LanguageIcon, MenuIcon, SearchIcon } from "../../icons";
 import { SiteTitle } from "./SiteTitle";
+import { SocialLinkIcons } from "./SocialLinkIcons";
 
 const VersionBadge = () => (
 	<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-600">
@@ -78,28 +71,9 @@ export const Header = () => {
 					</div>
 
 					<div class="flex items-center gap-4 flex-shrink-0">
-						<nav>
-							<ul class="flex items-center gap-4">
-								<li class="social">
-									<a
-										href={discordServerUrl}
-										class="text-gray-600 hover:text-gray-800 transition-colors"
-									>
-										<div class="w-4 h-4">
-											<DiscordIcon />
-										</div>
-									</a>
-								</li>
-								<li class="social">
-									<a
-										href={githubRepositoryUrl}
-										class="text-gray-600 hover:text-gray-800 transition-colors"
-									>
-										<div class="w-4 h-4 text-gray-600 hover:text-gray-800 transition-colors">
-											<GitHubIcon />
-										</div>
-									</a>
-								</li>
+						<nav class="flex items-center gap-4">
+							<SocialLinkIcons size="sm" />
+							<ul class="flex items-center gap-3">
 								<li class="secondary">
 									<a
 										href={typstOfficialUrl}

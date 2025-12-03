@@ -9,8 +9,11 @@ type Metadata = {
 	typstOfficialUrl: string;
 	typstOfficialDocsUrl: `http://${string}/` | `https://${string}/`;
 	githubOrganizationUrl: string;
-	githubRepositoryUrl: string;
-	discordServerUrl: string;
+	/** @deprecated Use `socialLinks` instead. */
+	githubRepositoryUrl?: string;
+	/** @deprecated Use `socialLinks` instead. */
+	discordServerUrl?: string;
+	socialLinks: { url: string; title?: string }[];
 	originUrl: string;
 	basePath: "/" | `/${string}/`;
 	displayTranslationStatus: boolean;
@@ -18,9 +21,24 @@ type Metadata = {
 
 const metadata: Metadata = (() => {
 	if (fs.existsSync(METADATA_FILE)) {
-		const content = fs.readFileSync(METADATA_FILE, "utf-8");
-		return JSON.parse(content);
+		const jsonBody = fs.readFileSync(METADATA_FILE, "utf-8");
+		const parsedMetadata: Metadata = JSON.parse(jsonBody);
+
+		// TODO: Remove deprecated fields in future major update.
+		if ("githubRepositoryUrl" in parsedMetadata) {
+			throw new Error(
+				"`githubRepositoryUrl` is deprecated. Please use `socialLinks` instead.",
+			);
+		}
+		if ("discordServerUrl" in parsedMetadata) {
+			throw new Error(
+				"`discordServerUrl` is deprecated. Please use `socialLinks` instead.",
+			);
+		}
+
+		return parsedMetadata;
 	}
+
 	// If metadata JSON file does not exist, fallback for test environments
 	return {
 		language: "en-US",
@@ -28,8 +46,13 @@ const metadata: Metadata = (() => {
 		typstOfficialUrl: "https://typst.app/",
 		typstOfficialDocsUrl: "https://typst.app/docs/",
 		githubOrganizationUrl: "https://github.com/typst",
-		githubRepositoryUrl: "https://github.com/typst/typst",
-		discordServerUrl: "https://discord.gg/dummy",
+		socialLinks: [
+			{ url: "https://github.com/typst/typst" },
+			{
+				title: "Discord (dummy)",
+				url: "https://discord.gg/dummy",
+			},
+		],
 		originUrl: "https://example.com/",
 		basePath: "/docs/",
 		displayTranslationStatus: true,
@@ -46,10 +69,8 @@ export const typstOfficialUrl = metadata.typstOfficialUrl;
 export const typstOfficialDocsUrl = metadata.typstOfficialDocsUrl;
 /** The GitHub organization URL. */
 export const githubOrganizationUrl = metadata.githubOrganizationUrl;
-/** The GitHub repository URL. */
-export const githubRepositoryUrl = metadata.githubRepositoryUrl;
-/** The Discord server invite URL. */
-export const discordServerUrl = metadata.discordServerUrl;
+/** The social links to be displayed in the site header and footer. */
+export const socialLinks = metadata.socialLinks;
 /** The origin URL of the deployed site, used for metadata. Note that the base path should not be included. */
 export const originUrl = metadata.originUrl;
 /** The base public path for deployment. This must match the value used in typst-docs. */
