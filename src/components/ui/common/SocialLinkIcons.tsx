@@ -1,7 +1,7 @@
 import type { FC } from "hono/jsx";
 import { twMerge } from "tailwind-merge";
 import { socialLinks } from "../../../metadata";
-import { DiscordIcon, GitHubIcon, HomeIcon, QQIcon } from "../../icons";
+import { DiscordIcon, GitHubIcon, LinkIcon, QQIcon } from "../../icons";
 
 export const SocialLinkIcons: FC<{ size: "sm" | "md" }> = ({ size }) => {
 	return (
@@ -35,7 +35,7 @@ export const SocialLinkIcons: FC<{ size: "sm" | "md" }> = ({ size }) => {
 					return {
 						url,
 						title: title ?? "Homepage",
-						Icon: HomeIcon,
+						Icon: LinkIcon,
 					};
 				})
 				.map(({ url, title, Icon }) => (
@@ -47,7 +47,7 @@ export const SocialLinkIcons: FC<{ size: "sm" | "md" }> = ({ size }) => {
 						>
 							<span class="sr-only">{title}</span>
 							<div class={size === "sm" ? "size-4" : "size-6"}>
-								<Icon title={title} />
+								<Icon />
 							</div>
 						</a>
 					</div>
