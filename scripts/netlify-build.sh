@@ -101,8 +101,11 @@ build_en_US v0.13.1
 # At present, typst-jp do not translate comments within example code.
 # And there is no simple way to download assets from GitHub Actions or the gh-pages branch.
 # Therefore, we reuse the assets from the official version.
-bash scripts/fetch-docs-assets.sh --tag "v0.13.1" --base "/irrelevant/"
-rm public/{docs,metadata}.json
+bash scripts/fetch-docs-assets.sh \
+	--tag "v0.13.1" \
+	--base "/irrelevant/" \
+	--skip docs.json \
+	--skip metadata
 
 # Prepare JSON files
 mise exec -- bun run fetch-docs-ja-jp

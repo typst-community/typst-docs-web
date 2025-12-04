@@ -7,20 +7,22 @@ set -euo pipefail
 
 print_usage() {
 	cat <<'EOF'
-Usage: fetch-docs-assets.sh [--tag TAG] [--base BASE] [--dest DEST] [--origin ORIGIN]
+Usage: fetch-docs-assets.sh [--tag TAG] [--base BASE] [options...]
 
 Environment/args:
   --tag TAG        (required) Release tag to download, e.g. v0.14.0 or latest
   --base BASE      (required) Base path used by docs, e.g. / or /docs/
   --dest DEST      (optional) Destination directory to write files (default: public)
   --origin ORIGIN  (optional) Origin URL for the deployed site, without base path (default: https://example.com/)
+  --skip FILE      (optional) Skip one of the files (docs.json, docs-assets, favicon, metadata), can be specified multiple times
 
 This script performs the following:
-  - Downloads docs.json from the release tag
-  - Replaces '/DOCS-BASE/' placeholder in docs.json with the provided base
-  - Downloads docs-assets.zip and extracts it to destination/assets
-  - Downloads favicon and writes to destination/favicon.png
-  - Generates destination/metadata.json with basic deployment metadata
+  - docs.json:
+    - Downloads docs.json from the release tag
+    - Replaces '/DOCS-BASE/' placeholder in docs.json with the provided base
+  - docs-assets: Downloads docs-assets.zip and extracts it to destination/assets
+  - favicon: Downloads favicon and writes to destination/favicon.png
+  - metadata: Generates destination/metadata.json with basic deployment metadata
 EOF
 }
 
@@ -30,6 +32,7 @@ DEST="public"
 ORIGIN="https://example.com/"
 TAG=""
 BASE=""
+SKIP=()
 
 # Parse args
 while [[ $# -gt 0 ]]; do
@@ -49,6 +52,19 @@ while [[ $# -gt 0 ]]; do
 	--origin)
 		ORIGIN="$2"
 		shift 2
+		;;
+	--skip)
+		case "$2" in
+		docs.json | docs-assets | favicon | metadata)
+			SKIP+=("$2")
+			shift 2
+			;;
+		*)
+			echo "Invalid --skip option: $2" >&2
+			print_usage
+			exit 2
+			;;
+		esac
 		;;
 	--help | -h)
 		print_usage
@@ -80,52 +96,67 @@ fi
 RELEASE_BASE_URL="https://github.com/${ORG}/dev-builds/releases/download/docs-${TAG}"
 
 # Download docs.json
-DOCS_URL="${RELEASE_BASE_URL}/docs.json"
-echo "Fetching docs from ${DOCS_URL}"
-if ! curl -sSfL "$DOCS_URL" -o "${DEST}/docs.json"; then
-	echo "Failed to download docs.json from ${DOCS_URL}" >&2
-	exit 3
-fi
-
-# Replace placeholder '/DOCS-BASE/' with provided base in docs.json
-# Use `sd` if available, else fallback to sed
-if command -v sd >/dev/null 2>&1; then
-	sd '/DOCS-BASE/' "$BASE" "${DEST}/docs.json"
+if printf '%s\n' "${SKIP[@]}" | grep -qx "docs.json"; then
+	echo "Skipping docs.json download as per --skip option"
 else
-	# Use portable sed: escape slashes
-	ESCAPED_BASE=$(printf '%s' "$BASE" | sed 's|/|\\/|g')
-	sed -i "s/\/DOCS-BASE\//${ESCAPED_BASE}/g" "${DEST}/docs.json"
+	DOCS_URL="${RELEASE_BASE_URL}/docs.json"
+	echo "Fetching docs from ${DOCS_URL}"
+	if ! curl -sSfL "$DOCS_URL" -o "${DEST}/docs.json"; then
+		echo "Failed to download docs.json from ${DOCS_URL}" >&2
+		exit 3
+	fi
+
+	# Replace placeholder '/DOCS-BASE/' with provided base in docs.json
+	# Use `sd` if available, else fallback to sed
+	if command -v sd >/dev/null 2>&1; then
+		sd '/DOCS-BASE/' "$BASE" "${DEST}/docs.json"
+	else
+		# Use portable sed: escape slashes
+		ESCAPED_BASE=$(printf '%s' "$BASE" | sed 's|/|\\/|g')
+		sed -i "s/\/DOCS-BASE\//${ESCAPED_BASE}/g" "${DEST}/docs.json"
+	fi
 fi
 
 # Download assets and extract
-ASSETS_URL="${RELEASE_BASE_URL}/docs-assets.zip"
-ASSETS_ZIP="docs-assets.zip"
-if curl -sSfL "$ASSETS_URL" -o "$ASSETS_ZIP"; then
-	echo "Extracting ${ASSETS_ZIP} to ${DEST}/assets"
-	# Clean up existing assets if present
-	rm -rf "${DEST}/assets"
-	unzip -q "$ASSETS_ZIP"
-	if [[ -d assets ]]; then
-		mv assets "${DEST}/assets"
-	else
-		echo "Downloaded zip did not contain assets/ folder" >&2
-		# keep build going; not necessarily fatal
-	fi
-	rm -f "$ASSETS_ZIP"
+if printf '%s\n' "${SKIP[@]}" | grep -qx "docs-assets"; then
+	echo "Skipping docs-assets download as per --skip option"
 else
-	echo "No assets ZIP was found at ${ASSETS_URL} (continuing without error)" >&2
+	ASSETS_URL="${RELEASE_BASE_URL}/docs-assets.zip"
+	ASSETS_ZIP="docs-assets.zip"
+	if curl -sSfL "$ASSETS_URL" -o "$ASSETS_ZIP"; then
+		echo "Extracting ${ASSETS_ZIP} to ${DEST}/assets"
+		# Clean up existing assets if present
+		rm -rf "${DEST}/assets"
+		unzip -q "$ASSETS_ZIP"
+		if [[ -d assets ]]; then
+			mv assets "${DEST}/assets"
+		else
+			echo "Downloaded zip did not contain assets/ folder" >&2
+			# keep build going; not necessarily fatal
+		fi
+		rm -f "$ASSETS_ZIP"
+	else
+		echo "No assets ZIP was found at ${ASSETS_URL} (continuing without error)" >&2
+	fi
 fi
 
 # Download favicon
-FAVICON_URL="https://github.com/${ORG}/org/raw/main/design/typst-community.icon.png"
-if curl -sSfL "$FAVICON_URL" -o "${DEST}/favicon.png"; then
-	echo "Wrote favicon to ${DEST}/favicon.png"
+if printf '%s\n' "${SKIP[@]}" | grep -qx "favicon"; then
+	echo "Skipping favicon download as per --skip option"
 else
-	echo "Failed to download favicon from ${FAVICON_URL} (continuing without error)" >&2
+	FAVICON_URL="https://github.com/${ORG}/org/raw/main/design/typst-community.icon.png"
+	if curl -sSfL "$FAVICON_URL" -o "${DEST}/favicon.png"; then
+		echo "Wrote favicon to ${DEST}/favicon.png"
+	else
+		echo "Failed to download favicon from ${FAVICON_URL} (continuing without error)" >&2
+	fi
 fi
 
 # Write metadata.json
-cat >"${DEST}/metadata.json" <<EOF
+if printf '%s\n' "${SKIP[@]}" | grep -qx "metadata"; then
+	echo "Skipping metadata generation as per --skip option"
+else
+	cat >"${DEST}/metadata.json" <<EOF
 {
   "\$schema": "../metadata.schema.json",
   "language": "en-US",
@@ -145,6 +176,7 @@ cat >"${DEST}/metadata.json" <<EOF
   "displayTranslationStatus": false
 }
 EOF
+fi
 
 # Done
 printf '\nFetch docs assets script done.\n'

@@ -76,6 +76,9 @@ jobs:
           - kind: ja-JP
             tag: latest
             base: "/docs/"
+          - kind: no-config
+            tag: v0.14.1
+            base: "/docs/"
     name: |
       Build for ${{ matrix.kind }} ${{ matrix.tag }} (base: ${{ matrix.base }})
     steps:
@@ -89,11 +92,14 @@ jobs:
         if: ${{ matrix.kind == 'ja-JP' }}
         run: bun run fetch-docs-ja-jp
       - name: Fetch docs assets
-        if: ${{ matrix.kind == 'official' }}
+        if: ${{ matrix.kind == 'official' || matrix.kind == 'no-config' }}
         shell: bash
         run: |
           set -euxo pipefail
-          bash scripts/fetch-docs-assets.sh --tag "${{ matrix.tag }}" --base "${{ matrix.base }}" --dest public
+          bash scripts/fetch-docs-assets.sh \
+            --tag "${{ matrix.tag }}" \
+            --base "${{ matrix.base }}" \
+            --dest public ${{ matrix.kind == 'no-config' && '--skip metadata --skip favicon' || '' }}
 
       - name: Run Vite build
         run: bun run build
