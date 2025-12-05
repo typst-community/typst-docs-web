@@ -7,12 +7,13 @@ set -euo pipefail
 
 print_usage() {
 	cat <<'EOF'
-Usage: fetch-docs-assets.sh [--tag TAG] [--base BASE] [--dest DEST]
+Usage: fetch-docs-assets.sh [--tag TAG] [--base BASE] [--dest DEST] [--origin ORIGIN]
 
 Environment/args:
-  --tag TAG      (required) Release tag to download, e.g. v0.14.0 or latest
-  --base BASE    (required) Base path used by docs, e.g. / or /docs/
-  --dest DEST    (optional) Destination directory to write files (default: public)
+  --tag TAG        (required) Release tag to download, e.g. v0.14.0 or latest
+  --base BASE      (required) Base path used by docs, e.g. / or /docs/
+  --dest DEST      (optional) Destination directory to write files (default: public)
+  --origin ORIGIN  (optional) Origin URL for the deployed site, without base path (default: https://example.com/)
 
 This script performs the following:
   - Downloads docs.json from the release tag
@@ -26,6 +27,7 @@ EOF
 # Defaults
 ORG="typst-community"
 DEST="public"
+ORIGIN="https://example.com/"
 TAG=""
 BASE=""
 
@@ -42,6 +44,10 @@ while [[ $# -gt 0 ]]; do
 		;;
 	--dest)
 		DEST="$2"
+		shift 2
+		;;
+	--origin)
+		ORIGIN="$2"
 		shift 2
 		;;
 	--help | -h)
@@ -134,7 +140,7 @@ cat >"${DEST}/metadata.json" <<EOF
       "url": "https://discord.gg/2uDybryKPe"
     }
   ],
-  "originUrl": "https://example.com/",
+  "originUrl": "${ORIGIN}",
   "basePath": "${BASE}",
   "displayTranslationStatus": false
 }
