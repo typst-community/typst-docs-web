@@ -14,13 +14,13 @@ mkdir _site
 
 # Prepare favicon
 curl -L https://github.com/typst-community/org/raw/main/design/typst-community.icon.png \
-  -o _site/favicon.png
+	-o _site/favicon.png
 cp _site/favicon.png public/favicon.png
 
 # Prepare the index page
 REF=$(git rev-parse --short HEAD)
 DATE=$(git log --max-count=1 --pretty='%cd' --date=iso)
-cat << EOF > _site/index.html
+cat <<EOF >_site/index.html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -71,22 +71,22 @@ EOF
 # 3.1. Build en-US
 
 build_en_US() {
-  local VERSION="$1"
+	local VERSION="$1"
 
-  BASE="en-US-$VERSION"
+	BASE="en-US-$VERSION"
 
-  # Prepare docs.json
-  curl -L https://github.com/typst-community/dev-builds/releases/download/docs-"$VERSION"/docs.json \
-    -o public/docs.json
-  sd '/DOCS-BASE/' "/$BASE/" public/docs.json
+	# Prepare docs.json
+	curl -L https://github.com/typst-community/dev-builds/releases/download/docs-"$VERSION"/docs.json \
+		-o public/docs.json
+	sd '/DOCS-BASE/' "/$BASE/" public/docs.json
 
-  # Prepare docs assets
-  curl -LO https://github.com/typst-community/dev-builds/releases/download/docs-"$VERSION"/docs-assets.zip
-  unzip docs-assets.zip && rm docs-assets.zip
-  mv assets public/assets
+	# Prepare docs assets
+	curl -LO https://github.com/typst-community/dev-builds/releases/download/docs-"$VERSION"/docs-assets.zip
+	unzip docs-assets.zip && rm docs-assets.zip
+	mv assets public/assets
 
-  # Configure metadata
-  cat << EOF > public/metadata.json
+	# Configure metadata
+	cat <<EOF >public/metadata.json
 {
   "\$schema": "../metadata.schema.json",
   "language": "en-US",
@@ -101,15 +101,15 @@ build_en_US() {
   "displayTranslationStatus": false
 }
 EOF
-  # $DEPLOY_URL will be set by netlify. Fallback to example.com for local testing.
-  # https://docs.netlify.com/build/configure-builds/environment-variables/#deploy-urls-and-metadata
+	# $DEPLOY_URL will be set by netlify. Fallback to example.com for local testing.
+	# https://docs.netlify.com/build/configure-builds/environment-variables/#deploy-urls-and-metadata
 
-  # Build
-  mise exec -- bun run build
-  mv dist _site/"$BASE"
+	# Build
+	mise exec -- bun run build
+	mv dist _site/"$BASE"
 
-  # Clean
-  rm -r public/{docs.json,assets,metadata.json}
+	# Clean
+	rm -r public/{docs.json,assets,metadata.json}
 }
 
 build_en_US v0.14.0
@@ -121,9 +121,9 @@ build_en_US v0.13.1
 mise exec -- bun run fetch-docs-ja-jp
 sd '"/docs/' '"/ja-JP/' public/docs.json
 sd --fixed-strings \
-  '"basePath": "/docs/",' \
-  '"basePath": "/ja-JP/",' \
-  public/metadata.json
+	'"basePath": "/docs/",' \
+	'"basePath": "/ja-JP/",' \
+	public/metadata.json
 
 # Prepare docs assets
 # At present, typst-jp do not translate comments within example code.
