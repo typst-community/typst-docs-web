@@ -64,7 +64,6 @@ jobs:
         uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2.2.3
       - name: Install dependencies
         run: bun install --frozen-lockfile
-
       - name: Fetch docs assets
         if: ${{ matrix.kind == 'ja-JP' }}
         run: bun run fetch-docs-ja-jp
@@ -73,45 +72,7 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
-
-          # Prepare docs.json
-          curl -L https://github.com/typst-community/dev-builds/releases/download/docs-${{ matrix.tag }}/docs.json \
-            -o public/docs.json
-          sd '/DOCS-BASE/' '${{ matrix.base }}' public/docs.json
-
-          # Prepare docs assets
-          curl -LO https://github.com/typst-community/dev-builds/releases/download/docs-${{ matrix.tag }}/docs-assets.zip
-          unzip docs-assets.zip
-          mv assets public/assets
-
-          # Prepare favicon
-          curl -L https://github.com/typst-community/org/raw/main/design/typst-community.icon.png \
-            -o public/favicon.png
-
-          # Configure metadata
-          TAG=${{ matrix.tag }}
-          # Strip the leading ‘v’ or convert to a valid format
-          ${{ startsWith(matrix.tag, 'v') && 'VERSION=${TAG#v}' || 'VERSION="0.dev.${TAG}"' }}
-          cat << EOF > public/metadata.json
-          {
-            "\$schema": "../metadata.schema.json",
-            "language": "en-US",
-            "version": "$VERSION",
-            "typstOfficialUrl": "https://typst.app",
-            "typstOfficialDocsUrl": "https://typst.app/docs/",
-            "githubOrganizationUrl": "https://github.com/typst-community",
-            "socialLinks": [
-              { "url": "https://github.com/typst-community/typst-docs-web" },
-              {
-                "title": "Discord (Typst)",
-                "url": "https://discord.gg/2uDybryKPe"
-              }
-            ],
-            "originUrl": "https://example.com/",
-            "basePath": "${{ matrix.base }}",
-            "displayTranslationStatus": false
-          }
-          EOF
+          bash scripts/fetch-docs-assets.sh --tag "${{ matrix.tag }}" --base "${{ matrix.base }}" --dest public
 
       - name: Run Vite build
         run: bun run build
