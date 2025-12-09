@@ -46,13 +46,7 @@ const metadata: Metadata = (() => {
 		typstOfficialUrl: "https://typst.app/",
 		typstOfficialDocsUrl: "https://typst.app/docs/",
 		githubOrganizationUrl: "https://github.com/typst",
-		socialLinks: [
-			{ url: "https://github.com/typst/typst" },
-			{
-				title: "Discord (dummy)",
-				url: "https://discord.gg/dummy",
-			},
-		],
+		socialLinks: [{ url: "https://github.com/typst/typst" }],
 		originUrl: "https://example.com/",
 		basePath: "/docs/",
 		displayTranslationStatus: true,

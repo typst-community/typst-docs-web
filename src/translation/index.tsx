@@ -1,14 +1,6 @@
 import type { FC } from "hono/jsx";
 import type { TooltipProps } from "../components/ui/Tooltip";
 import { language } from "../metadata";
-import {
-	Translation as EnUSTranslation,
-	translation as enUSTranslation,
-} from "./en-US";
-import {
-	Translation as JaJPTranslation,
-	translation as jaJPTranslation,
-} from "./ja-JP";
 
 /**
  * Translation dictionary for UI attributes and aria labels.
@@ -105,12 +97,15 @@ export type TranslationComponentProps =
 export type TranslationComponent = FC<TranslationComponentProps>;
 
 // Switch translation language.
-const { Translation, translation } = (() => {
+const { Translation, translation } = await (() => {
+	// These imports should be lazy and static.
+	// - Lazy: A translation may use special metadata (e.g., Discord/QQ URL), so not all translations can be safely imported in every build. Therefore, we have to use the import function, not the import statement.
+	// - Static: The argument of the import function has to be a plain string, not a variable. Dynamic import has limitations even with rollup and vite properly configured.
 	switch (language) {
-		case "ja-JP":
-			return { Translation: JaJPTranslation, translation: jaJPTranslation };
 		case "en-US":
-			return { Translation: EnUSTranslation, translation: enUSTranslation };
+			return import("./en-US");
+		case "ja-JP":
+			return import("./ja-JP");
 		default:
 			throw new Error(`Unsupported language: ${language}`);
 	}
