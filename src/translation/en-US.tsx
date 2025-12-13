@@ -222,6 +222,7 @@ export const Translation: TranslationComponent = (props) => {
 				</Fragment>
 			);
 		default:
-			return null;
+			props satisfies never;
+			throw new Error("Unreachable code executed.");
 	}
 };
