@@ -106,6 +106,8 @@ const { Translation, translation } = await (() => {
 			return import("./en-US");
 		case "ja-JP":
 			return import("./ja-JP");
+		case "zh-Hans":
+			return import("./zh-Hans");
 		default:
 			throw new Error(`Unsupported language: ${language}`);
 	}

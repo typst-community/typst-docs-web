@@ -5,7 +5,7 @@
 		"language": {
 			"type": "string",
 			"description": "The language of the documentation.",
-			"enum": ["ja-JP", "en-US"]
+			"enum": ["ja-JP", "en-US", "zh-Hans"]
 		},
 		"version": {
 			"type": "string",
