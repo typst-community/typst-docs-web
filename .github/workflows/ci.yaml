@@ -64,20 +64,27 @@ jobs:
       matrix:
         kind: [official]
         tag:
+          - v0.14.2
+          - v0.14.1
           - v0.14.0
           - main.2025-09-19.586b049
           - v0.13.1
           # These are `docs-*` tags in https://github.com/typst-community/dev-builds.
           # To create new tests, trigger the workflow in that repo.
         base:
+          # In general, non-root bases are more prone to errors than root bases.
+          # For combinations covered by netlify-build.sh, we test root bases here.
+          # For others, we test non-root bases.
           - "/"
-          - "/docs/"
         include:
           - kind: ja-JP
             tag: latest
             base: "/docs/"
+          - kind: official
+            tag: v0.14.2
+            base: "/docs/"
           - kind: no-config
-            tag: v0.14.1
+            tag: v0.14.2
             base: "/docs/"
     name: |
       Build for ${{ matrix.kind }} ${{ matrix.tag }} (base: ${{ matrix.base }})
@@ -105,7 +112,7 @@ jobs:
         run: bun run build
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         # Due to the limit of the artifact naming rule, we upload only one for each group.
-        if: ${{ matrix.base == '/' || matrix.kind == 'ja-JP' }}
+        if: ${{ matrix.base == '/' || matrix.kind != 'official' }}
         with:
           name: dist-${{ matrix.kind }}-${{ matrix.tag }}
           path: dist
