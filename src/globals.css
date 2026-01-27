@@ -53,20 +53,12 @@ samp {
 
 /* Information box */
 .info-box {
-	@apply my-8 rounded-md border border-cyan-200 bg-cyan-50 overflow-hidden relative;
-}
-
-.info-box > * {
-	@apply px-6;
+	@apply my-8 rounded-md border border-cyan-200 bg-cyan-50 overflow-hidden relative pt-8 pb-4 px-6;
 }
 
 .info-box::before {
 	content: "💡";
 	@apply absolute top-0 left-0 bg-cyan-200 text-cyan-800 text-xs font-bold py-1 px-3 rounded-br;
-}
-
-.info-box > *:first-child {
-	@apply pt-4;
 }
 
 /* Hide elements with the x-cloak attribute from Alpine.js */
