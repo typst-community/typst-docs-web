@@ -150,6 +150,10 @@ export const BaseTemplate: FC<BaseTemplateProps> = ({
 				/>
 				<script
 					defer
+					src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.14.8/dist/cdn.min.js"
+				/>
+				<script
+					defer
 					src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"
 				/>
 				{/* NOTE: @hono/vite-dev-server does not respect the base setting in the Vite configuration. */}
@@ -352,6 +356,9 @@ export const BaseTemplate: FC<BaseTemplateProps> = ({
 					x-transition:leave-start="opacity-100"
 					x-transition:leave-end="opacity-0"
 					x-on:click="searchOpen = false"
+					{...{ "x-on:keydown.escape.window": "searchOpen = false" }}
+					{...{ "x-trap.noscroll": "searchOpen" }}
+					x-effect="if (searchOpen) { setTimeout(() => { const input = $el.querySelector('.pagefind-ui__search-input'); if (input) input.focus(); }, 100) }"
 				>
 					<div
 						class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4"
