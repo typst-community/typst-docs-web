@@ -352,6 +352,7 @@ export const BaseTemplate: FC<BaseTemplateProps> = ({
 					x-transition:leave-start="opacity-100"
 					x-transition:leave-end="opacity-0"
 					x-on:click="searchOpen = false"
+					x-effect="if (searchOpen) { $nextTick(() => { const input = $el.querySelector('.pagefind-ui__search-input'); if (input) input.focus(); }) }"
 				>
 					<div
 						class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4"
