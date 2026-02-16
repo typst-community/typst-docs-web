@@ -213,3 +213,12 @@ pre {
 	background: #f6f8fa !important;
 	color: #1f2328;
 }
+
+/* Footnote styles */
+.prose .footnote-definition {
+	@apply flex items-baseline gap-2 mt-6 pt-4 border-t border-gray-200 text-sm;
+}
+
+.prose .footnote-definition p {
+	@apply m-0;
+}
