@@ -23,7 +23,7 @@ const typeHrefMap = (() => {
  * Retrieve a link from a type name.
  *
  * @param parameterType The type name.
- * @returns The link.
+ * @returns The link if found, otherwise `undefined`.
  */
 export const type2href = (parameterType: string): string | undefined => {
 	return typeHrefMap[parameterType];
