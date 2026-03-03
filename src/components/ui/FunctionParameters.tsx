@@ -1,9 +1,7 @@
 import type { FC } from "hono/jsx";
-import { basePath } from "../../metadata";
 import { Translation } from "../../translation/";
 import type { Param } from "../../types/model";
 import { normalizeDetailBlocks } from "../../utils/normalizeModel";
-import { joinPath } from "../../utils/path";
 import { ChevronRightIcon } from "../icons";
 import { HtmlBlock } from "./HtmlBlock";
 import { HtmlInline } from "./HtmlInline";
@@ -40,17 +38,7 @@ export const FunctionParameters: FC<FunctionParametersProps> = ({
 								<div class="flex flex-wrap gap-1 font-normal">
 									{param.types.map((t) => {
 										const href = type2href(t);
-										return (
-											<TypeIcon
-												key={t}
-												type={t}
-												href={
-													href
-														? joinPath(basePath, "reference", href)
-														: undefined
-												}
-											/>
-										);
+										return <TypeIcon key={t} type={t} href={href} />;
 									})}
 								</div>
 

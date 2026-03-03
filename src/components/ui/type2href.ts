@@ -12,11 +12,9 @@ const typeHrefMap = (() => {
 		if (!route.startsWith("/docs/reference/")) continue;
 		const parts = route.split("/").filter((segment) => segment.length > 0);
 		if (parts.length < 4) continue;
-		const [, , category, name, extra] = parts;
+		const [, , , name, extra] = parts;
 		if (route.endsWith("/") && !extra) {
-			if (!map[name]) {
-				map[name] = `${category}/${name}/`;
-			}
+			map[name] ||= route;
 		}
 	}
 	return map;
@@ -28,7 +26,7 @@ const typeHrefMap = (() => {
  * @param parameterType The type name.
  * @returns The link.
  */
-export const type2href = (parameterType: string): string | null => {
+export const type2href = (parameterType: string): string | undefined => {
 	return typeHrefMap[parameterType];
 };
 
