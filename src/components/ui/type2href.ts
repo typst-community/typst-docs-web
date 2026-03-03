@@ -8,14 +8,13 @@ const typeHrefMap = (() => {
 	const map: Record<string, string> = {};
 	const [flat] = flattenDocs(docs);
 	for (const page of flat) {
-		const { route } = page;
+		const { route, body } = page;
 		if (!route.startsWith("/docs/reference/")) continue;
-		const parts = route.split("/").filter((segment) => segment.length > 0);
-		if (parts.length < 4) continue;
-		const [, , , name, extra] = parts;
-		if (route.endsWith("/") && !extra) {
-			map[name] ||= route;
-		}
+		if (body?.kind !== "type") continue;
+		const typeName = body.content?.name;
+		if (!typeName) continue;
+		if (!route.endsWith("/")) continue;
+		map[typeName] ||= route;
 	}
 	return map;
 })();
