@@ -9,7 +9,6 @@ const typeHrefMap = (() => {
 	const [flat] = flattenDocs(docs);
 	for (const page of flat) {
 		const { route, body } = page;
-		if (!route.startsWith("/docs/reference/")) continue;
 		if (body?.kind !== "type") continue;
 		const typeName = body.content?.name;
 		if (!typeName) continue;
