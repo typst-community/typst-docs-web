@@ -39,7 +39,9 @@ const getTypeStyles = (
 			label: { bgColor: "bg-blue-100", textColor: "text-blue-800" },
 
 			color: {
-				bgColor: "bg-gradient-to-r from-blue-300 via-green-200 to-yellow-200",
+				// blue-300, green-200, yellow-200, red-300
+				bgColor:
+					"bg-[linear-gradient(to_right,#93c5fd,#bbf7d0,#fef08a,#fca5a5)]",
 				textColor: "text-gray-800",
 			},
 		};
