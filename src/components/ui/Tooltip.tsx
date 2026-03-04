@@ -110,7 +110,7 @@ export const Tooltip: FC<TooltipProps> = ({ kind }) => {
 
 			<button
 				type="button"
-				class="w-4 h-4 hover:bg-black/10 rounded focus:outline-none cursor-pointer"
+				class="w-4 h-4 hover:bg-black/10 rounded cursor-pointer"
 				aria-label={translation.showInformation({
 					name: translation.tooltipKind({ kind }),
 				})}
