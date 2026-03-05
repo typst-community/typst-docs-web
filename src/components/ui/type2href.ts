@@ -1,62 +1,31 @@
+import docsJson from "../../../public/docs.json";
+import type { Page } from "../../types/model";
+import { flattenDocs } from "../../utils/flattenDocs";
+
+const docs = docsJson as unknown as Page[];
+
+const typeHrefMap = (() => {
+	const map: Record<string, string> = {};
+	const [flat] = flattenDocs(docs);
+	for (const page of flat) {
+		const { route, body } = page;
+		if (body?.kind !== "type") continue;
+		const typeName = body.content?.name;
+		if (!typeName) continue;
+		if (!route.endsWith("/")) continue;
+		map[typeName] ||= route;
+	}
+	return map;
+})();
+
 /**
  * Retrieve a link from a type name.
  *
  * @param parameterType The type name.
- * @returns The link.
+ * @returns The link if found, otherwise `undefined`.
  */
-export const type2href = (parameterType: string): string | null => {
-	const foundationSet = new Set([
-		"arguments",
-		"array",
-		"auto",
-		"bool",
-		"bytes",
-		"content",
-		"datetime",
-		"decimal",
-		"dictionary",
-		"duration",
-		"float",
-		"function",
-		"int",
-		"label",
-		"module",
-		"none",
-		"plugin",
-		"regex",
-		"selector",
-		"str",
-		"type",
-		"version",
-	]);
-
-	const layoutSet = new Set([
-		"alignment",
-		"angle",
-		"direction",
-		"fraction",
-		"length",
-		"ratio",
-		"relative",
-	]);
-
-	const visualizeSet = new Set(["color", "gradient", "pattern", "stroke"]);
-
-	const introspectionSet = new Set(["counter", "location", "state"]);
-
-	if (foundationSet.has(parameterType)) {
-		return `foundations/${parameterType}/`;
-	}
-	if (layoutSet.has(parameterType)) {
-		return `layout/${parameterType}/`;
-	}
-	if (visualizeSet.has(parameterType)) {
-		return `visualize/${parameterType}/`;
-	}
-	if (introspectionSet.has(parameterType)) {
-		return `introspection/${parameterType}/`;
-	}
-	return null;
+export const type2href = (parameterType: string): string | undefined => {
+	return typeHrefMap[parameterType];
 };
 
 /**

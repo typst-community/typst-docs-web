@@ -1,7 +1,5 @@
 import type { FC } from "hono/jsx";
-import { basePath } from "../../metadata";
 import type { Func } from "../../types/model";
-import { joinPath } from "../../utils/path";
 import { TypeIcon } from "./TypeIcon";
 import { buildParamId, type2href } from "./type2href";
 
@@ -57,15 +55,7 @@ export const FunctionDefinition: FC<FunctionDefinitionProps> = ({
 							<div class="flex flex-row flex-wrap gap-1">
 								{param.types.map((t) => {
 									const href = type2href(t);
-									return (
-										<TypeIcon
-											key={t}
-											type={t}
-											href={
-												href ? joinPath(basePath, "reference", href) : undefined
-											}
-										/>
-									);
+									return <TypeIcon key={t} type={t} href={href} />;
 								})}
 							</div>
 							{index < func.params.length - 1 && (
@@ -83,15 +73,7 @@ export const FunctionDefinition: FC<FunctionDefinitionProps> = ({
 						<div class="inline-flex flex-wrap gap-1 py-0.5">
 							{func.returns.map((ret, _) => {
 								const href = type2href(ret);
-								return (
-									<TypeIcon
-										key={ret}
-										type={ret}
-										href={
-											href ? joinPath(basePath, "reference", href) : undefined
-										}
-									/>
-								);
+								return <TypeIcon key={ret} type={ret} href={href} />;
 							})}
 						</div>
 					</>
