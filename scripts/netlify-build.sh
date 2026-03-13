@@ -58,7 +58,7 @@ cat <<EOF >_site/index.html
         <li><a href="./en-US-v0.14.1/">en-US, v0.14.1</a></li>
         <li><a href="./en-US-v0.14.0/">en-US, v0.14.0</a></li>
         <li><a href="./en-US-v0.13.1/">en-US, v0.13.1</a></li>
-        <li><a href="./ja-JP/">ja-JP, v0.13.1</a></li>
+        <li><a href="./ja-JP/">ja-JP, v0.14.0</a> (upstream: <a href="https://typst-jp.github.io/docs/">Typst Japanese Community's website</a>)</li>
       </ul>
       <p>
         typst-docs-web version:
