@@ -94,7 +94,7 @@ samp {
 }
 
 .preview {
-	/* Preview-only examples are not wrapped in `.preview-code`, but they also need styles to make borders visible */
+	/* Preview-only examples are not wrapped in `.previewed-code`, but they also need styles to make borders visible */
 	@apply bg-gray-200 p-4;
 
 	/* Side-by-side examples need additional styles for preview images. */
