@@ -149,6 +149,8 @@ export const Translation: TranslationComponent = (props) => {
 			);
 		case "globalAttributes":
 			return <Fragment>Global Attributes</Fragment>;
+		case "functions":
+			return <Fragment>Functions</Fragment>;
 		case "parameters":
 			return <Fragment>Parameter</Fragment>;
 		case "parametersDescription":
