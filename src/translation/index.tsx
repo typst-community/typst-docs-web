@@ -45,6 +45,7 @@ type TranslationComponentKey =
 	| "requiredDescription"
 	// Other texts in documentation
 	// Don't forget `deprecationWarning` and `showExample` declared below.
+	| "functions"
 	| "tutorial"
 	| "tutorialDescription"
 	| "reference"

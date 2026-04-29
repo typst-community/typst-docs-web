@@ -82,6 +82,8 @@ export const Translation: TranslationComponent = (props) => {
 					这些函数和类型带有附属定义。要访问这种定义，请先写上函数或类型的名称，再加上定义的名称，并用句点在中间分隔。
 				</Fragment>
 			);
+		case "functions":
+			return <Fragment>函数</Fragment>;
 		case "parameters":
 			return <Fragment>参数</Fragment>;
 		case "parametersDescription":

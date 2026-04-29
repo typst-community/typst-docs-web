@@ -163,6 +163,8 @@ export const Translation: TranslationComponent = (props) => {
 		case "globalAttributes":
 			// TODO: Translate this
 			return <Fragment>Global Attributes</Fragment>;
+		case "functions":
+			return <Fragment>関数</Fragment>;
 		case "parameters":
 			return <Fragment>引数</Fragment>;
 		case "parametersDescription":

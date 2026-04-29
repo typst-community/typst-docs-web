@@ -35,7 +35,7 @@ export const GroupTemplate: FC<GroupTemplateProps> = ({
 
 			{content.functions.length > 0 && (
 				<>
-					<h2 id="functions">Function</h2>
+					<h2 id="functions"><Translation translationKey="functions" /></h2>
 
 					{content.functions.map((method, _index) => (
 						<div
