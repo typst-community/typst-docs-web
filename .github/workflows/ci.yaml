@@ -64,6 +64,7 @@ jobs:
       matrix:
         kind: [official]
         tag:
+          - main.2026-05-05.0d72726
           - v0.14.2
           - v0.14.1
           - v0.14.0
